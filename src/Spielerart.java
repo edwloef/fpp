@@ -1,0 +1,4 @@
+enum Spielerart {
+    Mensch,
+    Computer
+}
