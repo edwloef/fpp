@@ -13,13 +13,10 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     private static final String ANSI_RESET = "\033[0m"; // reset output color
 
     private static final int[][] RICHTUNGSARRAY = {
-        { -1, -1 }, // oben links
-        { 0, -1 }, // links
-        { 1, -1 }, // unten links
-        { 1, 0 }, // unten
-        { 1, 1 }, // unten rechts
-        { 0, 1 }, // rechts
-        { -1, 1 }, // oben rechts
+        { 1, -1 }, // unten links -> oben rechts
+        { 1, 0 }, // unten -> oben
+        { 1, 1 }, // unten rechts -> oben links
+        { 0, 1 }, // rechts -> links
     };
 
     public Viergewinnt(Spieler spieler_1, Spieler spieler_2) {
@@ -47,7 +44,9 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     }
 
     private boolean pruefeVier(int x, int y, int a, int b) {
-        for (int i = 1; i < 4; i++) {
+        int counter = 0;
+
+        for (int i = -3; i < 4; i++) {
             if (
                 super.spielfeld.getBelegungTyp(
                     this.getFarbe(),
@@ -55,11 +54,12 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                     y + b * i
                 )
             ) {
-                if (i == 3) {
+                if (counter == 3) {
                     return false;
                 }
+                counter++;
             } else {
-                break;
+                counter = 0;
             }
         }
         return true;
