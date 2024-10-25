@@ -11,15 +11,15 @@ public class Spielstein implements Comparable<Spielstein> {
     }
 
     public String getTyp() {
-        return typ;
+        return this.typ;
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     @Override
@@ -33,5 +33,10 @@ public class Spielstein implements Comparable<Spielstein> {
         } else {
             return 1;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "{typ: " + this.typ + ", x: " + this.x + ", y: " + this.y + "}";
     }
 }

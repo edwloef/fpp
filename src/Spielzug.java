@@ -11,14 +11,19 @@ public class Spielzug {
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public Spieler getSpieler() {
-        return spieler;
+        return this.spieler;
+    }
+
+    @Override
+    public String toString() {
+        return "{x: " + x + ", y: " + y + ", spieler: " + spieler + "}";
     }
 }

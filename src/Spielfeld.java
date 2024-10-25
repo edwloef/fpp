@@ -7,6 +7,8 @@ public class Spielfeld {
     private ArrayList<Spielstein> spielsteine;
     private String[][] belegung;
 
+    private static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
+
     public Spielfeld(int x_size, int y_size) {
         this.x_size = x_size;
         this.y_size = y_size;
@@ -15,78 +17,83 @@ public class Spielfeld {
     }
 
     public int getXSize() {
-        return x_size;
+        return this.x_size;
     }
 
     public int getYSize() {
-        return y_size;
+        return this.y_size;
     }
 
     public boolean getBelegung(int x, int y) {
         if (x < 0 || y < 0 || x >= this.x_size || y >= this.y_size) {
             return false;
         }
-        return !(belegung[x][y].isEmpty());
+        return !(this.belegung[x][y] == null);
+    }
+
+    public boolean getBelegungTyp(String typ, int x, int y) {
+        if (this.getBelegung(x, y) == false) {
+            return false;
+        }
+        return this.belegung[x][y].equals(typ);
     }
 
     public void addSpielstein(String typ, int x, int y) {
         Spielstein spielstein = new Spielstein(typ, x, y);
-        spielsteine.add(spielstein);
-        belegung[x][y] = typ;
+        this.spielsteine.add(spielstein);
+        this.belegung[x][y] = typ;
     }
 
     public void removeSpielstein(String typ, int x, int y) {
         int i;
-        for (i = 0; i < spielsteine.size(); i++) {
-            if (spielsteine.get(i).getTyp().equals(typ)) {
+        for (i = 0; i < this.spielsteine.size(); i++) {
+            if (this.spielsteine.get(i).getTyp().equals(typ)) {
                 break;
             }
         }
-        spielsteine.remove(i);
-        belegung[x][y] = typ;
+        this.spielsteine.remove(i);
+        this.belegung[x][y] = null;
     }
 
     public void replaceSpielstein(Spielstein spielstein) {
         int i;
-        for (i = 0; i < spielsteine.size(); i++) {
-            if (spielsteine.get(i).equals(spielstein)) {
+        for (i = 0; i < this.spielsteine.size(); i++) {
+            if (this.spielsteine.get(i).equals(spielstein)) {
                 break;
             }
         }
-        spielsteine.set(i, spielstein);
+        this.spielsteine.set(i, spielstein);
+        this.belegung[spielstein.getX()][spielstein.getY()] =
+            spielstein.getTyp();
     }
 
     public void draw() {
-        for (int i = 0; i < y_size; i++) {
-            for (int j = 0; j < 2 * x_size + 1; j++) {
+        System.out.print(ANSI_CLEAR);
+
+        for (int i = 0; i < this.y_size; i++) {
+            for (int j = 0; j < 2 * this.x_size + 1; j++) {
                 System.out.print("-");
             }
             System.out.println();
 
-            for (int j = 0; j < x_size; j++) {
+            for (int j = 0; j < this.x_size; j++) {
                 System.out.print("|");
 
-                Spielstein stein = null;
-                for (Spielstein spielstein : spielsteine) {
-                    if (spielstein.getX() == i && spielstein.getY() == j) {
-                        stein = spielstein;
-                        break;
-                    }
-                }
-
+                String stein = this.belegung[i][j];
                 if (stein == null) {
                     System.out.print(" ");
                 } else {
-                    System.out.print(stein.getTyp());
+                    System.out.print(stein);
                 }
             }
-
             System.out.print("|");
+
+            System.out.println();
         }
 
-        for (int j = 0; j < 2 * x_size + 1; j++) {
-            System.out.print("-");
+        for (int j = 0; j < this.x_size; j++) {
+            System.out.print("-" + (j + 1));
         }
-        System.out.println();
+        System.out.println("-");
     }
 }

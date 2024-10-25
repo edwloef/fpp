@@ -8,10 +8,16 @@ public abstract class Spiel {
         this.spielfeld = spielfeld;
     }
 
-    public void durchgang() {
-        for (Spieler spiela : spieler) {
-            spielzug(spiela);
+    public boolean durchgang() {
+        for (Spieler spiela : this.spieler) {
+            this.spielfeld.draw();
+            if (!this.spielzug(spiela)) {
+                this.spielfeld.draw();
+                System.out.println("Gewonnen " + spiela.getName());
+                return false;
+            }
         }
+        return true;
     }
 
     protected abstract boolean spielzug(Spieler spieler);

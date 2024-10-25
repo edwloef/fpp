@@ -8,15 +8,18 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     Scanner sc = new Scanner(System.in);
     boolean spielstein_typ = false;
 
-    private static final int[][] richtungsArray = {
-        { 1, 0 },
-        { 1, 1 },
-        { 0, 1 },
-        { -1, 0 },
-        { -1, -1 },
-        { 0, -1 },
-        { 1, -1 },
-        { -1, 1 },
+    private static final String ANSI_RED = "\033[31m"; // red output color
+    private static final String ANSI_BLUE = "\033[34m"; // blue output color
+    private static final String ANSI_RESET = "\033[0m"; // reset output color
+
+    private static final int[][] RICHTUNGSARRAY = {
+        { -1, -1 }, // oben links
+        { 0, -1 }, // links
+        { 1, -1 }, // unten links
+        { 1, 0 }, // unten
+        { 1, 1 }, // unten rechts
+        { 0, 1 }, // rechts
+        { -1, 1 }, // oben rechts
     };
 
     public Viergewinnt(Spieler spieler_1, Spieler spieler_2) {
@@ -24,42 +27,52 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     }
 
     private int getZeile(int y) {
-        int x = 0;
-        while (x < spielfeld.getXSize()) {
-            if (spielfeld.getBelegung(x, y)) {
+        int x = super.spielfeld.getXSize() - 1;
+
+        while (x >= 0) {
+            if (!super.spielfeld.getBelegung(x, y)) {
                 return x;
             }
-            x += 1;
+            x -= 1;
         }
         return x;
     }
 
-    private String getFarbe(boolean spielstein_typ) {
-        if (spielstein_typ) {
-            return "Farbe_1";
+    private String getFarbe() {
+        if (this.spielstein_typ) {
+            return ANSI_RED + "◉" + ANSI_RESET;
         } else {
-            return "Farbe_2";
+            return ANSI_BLUE + "◉" + ANSI_RESET;
         }
     }
 
     private boolean pruefeVier(int x, int y, int a, int b) {
         for (int i = 1; i < 4; i++) {
-            if (this.spielfeld.getBelegung(x + a * i, y + b * i)) {
+            if (
+                super.spielfeld.getBelegungTyp(
+                    this.getFarbe(),
+                    x + a * i,
+                    y + b * i
+                )
+            ) {
                 if (i == 3) {
-                    return true;
+                    return false;
                 }
+            } else {
+                break;
             }
         }
-        return false;
+        return true;
     }
 
-    protected boolean pruefeEnde(int x, int y) {
-        for (int[] richtung : Viergewinnt.richtungsArray) {
-            if (pruefeVier(x, y, richtung[0], richtung[1])) {
-                return true;
+    protected boolean pruefeWeiterspielen(int x, int y) {
+        for (int[] richtung : RICHTUNGSARRAY) {
+            if (!this.pruefeVier(x, y, richtung[0], richtung[1])) {
+                return false;
             }
+            System.out.println();
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -74,27 +87,23 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     @Override
     public boolean spielzug(Spieler spieler) {
         while (true) {
-            System.out.println(
-                "Bitte wähle deiner Eingabespalte " + spieler.getName() + " :"
+            this.spielstein_typ = this.spielstein_typ ^ true;
+            System.out.print(
+                "Bitte wähle deine Eingabespalte " + spieler.getName() + ": "
             );
-            int y = sc.nextInt();
-            int x = getZeile(y);
+            int y = this.sc.nextInt() - 1;
+            int x = this.getZeile(y);
             if (
-                x > 0 &&
-                x <= spielfeld.getXSize() &&
-                y > 0 &&
-                y <= spielfeld.getYSize()
+                x >= 0 &&
+                x < super.spielfeld.getXSize() &&
+                y >= 0 &&
+                y < super.spielfeld.getYSize()
             ) {
-                if (!spielfeld.getBelegung(x - 1, y - 1)) {
-                    spielfeld.addSpielstein(
-                        getFarbe(spielstein_typ),
-                        x - 1,
-                        y - 1
-                    );
-                    spielstein_typ = spielstein_typ ^ true;
+                if (!super.spielfeld.getBelegung(x, y)) {
+                    super.spielfeld.addSpielstein(getFarbe(), x, y);
                     Spielzug spielzug = new Spielzug(x, y, spieler);
-                    protokolliere(spielzug);
-                    return pruefeEnde(x, y);
+                    this.protokolliere(spielzug);
+                    return this.pruefeWeiterspielen(x, y);
                 } else {
                     System.out.println("Error: Feld ist schon belegt.");
                 }

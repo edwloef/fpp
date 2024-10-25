@@ -9,10 +9,15 @@ public class Spieler {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public Spielerart getArt() {
-        return art;
+        return this.art;
+    }
+
+    @Override
+    public String toString() {
+        return "{name: " + this.name + ", art: " + this.art + "}";
     }
 }
