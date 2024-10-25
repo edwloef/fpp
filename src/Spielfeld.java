@@ -5,7 +5,7 @@ public class Spielfeld {
     private static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
 
     public Spielfeld(int x_size, int y_size) {
-        this.spielsteine = new Spielstein[x_size][y_size];
+        this.spielsteine = new Spielstein[y_size][x_size];
     }
 
     public int getXSize() {
@@ -20,7 +20,7 @@ public class Spielfeld {
         if (x < 0 || y < 0 || x >= this.getXSize() || y >= this.getYSize()) {
             return false;
         }
-        
+
         return !(this.spielsteine[x][y] == null);
     }
 
@@ -28,7 +28,7 @@ public class Spielfeld {
         if (this.getBelegung(x, y) == false) {
             return false;
         }
-        
+
         return this.spielsteine[x][y].getTyp().equals(typ);
     }
 
@@ -43,13 +43,13 @@ public class Spielfeld {
     public void draw() {
         System.out.print(ANSI_CLEAR);
 
-        for (int i = 0; i < this.getYSize(); i++) {
-            for (int j = 0; j < 2 * this.getXSize() + 1; j++) {
+        for (int i = 0; i < this.getXSize(); i++) {
+            for (int j = 0; j < 2 * this.getYSize() + 1; j++) {
                 System.out.print("-");
             }
             System.out.println();
 
-            for (int j = 0; j < this.getXSize(); j++) {
+            for (int j = 0; j < this.getYSize(); j++) {
                 System.out.print("|");
 
                 Spielstein stein = this.spielsteine[i][j];
@@ -64,7 +64,7 @@ public class Spielfeld {
             System.out.println();
         }
 
-        for (int j = 0; j < this.getXSize(); j++) {
+        for (int j = 0; j < this.getYSize(); j++) {
             System.out.print("-" + (j + 1));
         }
         System.out.println("-");

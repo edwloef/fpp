@@ -20,7 +20,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     };
 
     public Viergewinnt(Spieler spieler_1, Spieler spieler_2) {
-        super(new Spieler[] { spieler_1, spieler_2 }, new Spielfeld(9, 9));
+        super(new Spieler[] { spieler_1, spieler_2 }, new Spielfeld(8, 8));
     }
 
     private int getZeile(int y) {
