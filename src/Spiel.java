@@ -1,4 +1,5 @@
 public abstract class Spiel {
+
     protected Spieler[] spieler;
     protected Spielfeld spielfeld;
 
@@ -11,7 +12,7 @@ public abstract class Spiel {
         for (Spieler spiela : spieler) {
             spielzug(spiela);
         }
-    };
+    }
 
     protected abstract boolean spielzug(Spieler spieler);
 }

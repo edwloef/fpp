@@ -8,9 +8,16 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     Scanner sc = new Scanner(System.in);
     boolean spielstein_typ = false;
 
-    private static final int[][] richtungsArray = { { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 },
-            { 1, -1 },
-            { -1, 1 } };
+    private static final int[][] richtungsArray = {
+        { 1, 0 },
+        { 1, 1 },
+        { 0, 1 },
+        { -1, 0 },
+        { -1, -1 },
+        { 0, -1 },
+        { 1, -1 },
+        { -1, 1 },
+    };
 
     public Viergewinnt(Spieler spieler_1, Spieler spieler_2) {
         super(new Spieler[] { spieler_1, spieler_2 }, new Spielfeld(9, 9));
@@ -46,7 +53,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         return false;
     }
 
-    protected  boolean pruefeEnde(int x, int y) {
+    protected boolean pruefeEnde(int x, int y) {
         for (int[] richtung : Viergewinnt.richtungsArray) {
             if (pruefeVier(x, y, richtung[0], richtung[1])) {
                 return true;
@@ -67,12 +74,23 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     @Override
     public boolean spielzug(Spieler spieler) {
         while (true) {
-            System.out.println("Bitte wähle deiner Eingabespalte "+ spieler.getName() + " :");
+            System.out.println(
+                "Bitte wähle deiner Eingabespalte " + spieler.getName() + " :"
+            );
             int y = sc.nextInt();
             int x = getZeile(y);
-            if (x > 0 && x <= spielfeld.getXSize() && y > 0 && y <= spielfeld.getYSize()) {
+            if (
+                x > 0 &&
+                x <= spielfeld.getXSize() &&
+                y > 0 &&
+                y <= spielfeld.getYSize()
+            ) {
                 if (!spielfeld.getBelegung(x - 1, y - 1)) {
-                    spielfeld.addSpielstein(getFarbe(spielstein_typ), x - 1, y - 1);
+                    spielfeld.addSpielstein(
+                        getFarbe(spielstein_typ),
+                        x - 1,
+                        y - 1
+                    );
                     spielstein_typ = spielstein_typ ^ true;
                     Spielzug spielzug = new Spielzug(x, y, spieler);
                     protokolliere(spielzug);
@@ -81,10 +99,10 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                     System.out.println("Error: Feld ist schon belegt.");
                 }
             } else {
-                System.out.println("Error: feld außerhalb des Spielfeldes gewählt.");
+                System.out.println(
+                    "Error: feld außerhalb des Spielfeldes gewählt."
+                );
             }
         }
-
     }
-
 }

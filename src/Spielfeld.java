@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Spielfeld {
+
     private int x_size;
     private int y_size;
     private ArrayList<Spielstein> spielsteine;
@@ -35,22 +36,24 @@ public class Spielfeld {
     }
 
     public void removeSpielstein(String typ, int x, int y) {
-        for (int i = 0; i < spielsteine.size(); i++) {
+        int i;
+        for (i = 0; i < spielsteine.size(); i++) {
             if (spielsteine.get(i).getTyp().equals(typ)) {
-                spielsteine.remove(i);
-                return;
+                break;
             }
         }
+        spielsteine.remove(i);
         belegung[x][y] = typ;
     }
 
     public void replaceSpielstein(Spielstein spielstein) {
-        for (int i = 0; i < spielsteine.size(); i++) {
+        int i;
+        for (i = 0; i < spielsteine.size(); i++) {
             if (spielsteine.get(i).equals(spielstein)) {
-                spielsteine.set(i, spielstein);
-                return;
+                break;
             }
         }
+        spielsteine.set(i, spielstein);
     }
 
     public void draw() {
@@ -85,5 +88,5 @@ public class Spielfeld {
             System.out.print("-");
         }
         System.out.println();
-    };
+    }
 }

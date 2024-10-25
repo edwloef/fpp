@@ -1,4 +1,4 @@
 enum Spielerart {
     Mensch,
-    Computer
+    Computer,
 }

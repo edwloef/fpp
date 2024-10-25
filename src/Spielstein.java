@@ -1,4 +1,5 @@
 public class Spielstein implements Comparable<Spielstein> {
+
     private String typ;
     private int x;
     private int y;
@@ -23,7 +24,11 @@ public class Spielstein implements Comparable<Spielstein> {
 
     @Override
     public int compareTo(Spielstein arg0) {
-        if (this.getX() == arg0.getX() && this.getY() == arg0.getY() && this.getTyp().equals(arg0.getTyp())) {
+        if (
+            this.getX() == arg0.getX() &&
+            this.getY() == arg0.getY() &&
+            this.getTyp().equals(arg0.getTyp())
+        ) {
             return 0;
         } else {
             return 1;

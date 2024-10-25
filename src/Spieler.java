@@ -1,4 +1,5 @@
 public class Spieler {
+
     private String name;
     private Spielerart art;
 

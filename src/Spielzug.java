@@ -1,4 +1,5 @@
 public class Spielzug {
+
     private int x;
     private int y;
     private Spieler spieler;
