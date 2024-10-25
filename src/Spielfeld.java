@@ -4,11 +4,13 @@ public class Spielfeld {
     private int x_size;
     private int y_size;
     private ArrayList<Spielstein> spielsteine;
+    private String[][] belegung;
 
     public Spielfeld(int x_size, int y_size) {
         this.x_size = x_size;
         this.y_size = y_size;
         this.spielsteine = new ArrayList<>();
+        this.belegung = new String[y_size][y_size];
     }
 
     public int getXSize() {
@@ -19,17 +21,27 @@ public class Spielfeld {
         return y_size;
     }
 
-    public void addSpielstein(Spielstein spielstein) {
-        spielsteine.add(spielstein);
+    public boolean getBelegung(int x, int y) {
+        if (x < 0 || y < 0 || x >= this.x_size || y >= this.y_size) {
+            return false;
+        }
+        return !(belegung[x][y].isEmpty());
     }
 
-    public void removeSpielstein(Spielstein spielstein) {
+    public void addSpielstein(String typ, int x, int y) {
+        Spielstein spielstein = new Spielstein(typ, x, y);
+        spielsteine.add(spielstein);
+        belegung[x][y] = typ;
+    }
+
+    public void removeSpielstein(String typ, int x, int y) {
         for (int i = 0; i < spielsteine.size(); i++) {
-            if (spielsteine.get(i).equals(spielstein)) {
+            if (spielsteine.get(i).getTyp().equals(typ)) {
                 spielsteine.remove(i);
                 return;
             }
         }
+        belegung[x][y] = typ;
     }
 
     public void replaceSpielstein(Spielstein spielstein) {

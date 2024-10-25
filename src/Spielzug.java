@@ -1,9 +1,9 @@
 public class Spielzug {
     private int x;
     private int y;
-    private String spieler;
+    private Spieler spieler;
 
-    public Spielzug(int x, int y, String spieler) {
+    public Spielzug(int x, int y, Spieler spieler) {
         this.x = x;
         this.y = y;
         this.spieler = spieler;
@@ -17,7 +17,7 @@ public class Spielzug {
         return y;
     }
 
-    public String getSpieler() {
+    public Spieler getSpieler() {
         return spieler;
     }
 }

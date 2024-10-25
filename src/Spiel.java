@@ -8,10 +8,10 @@ public abstract class Spiel {
     }
 
     public void durchgang() {
-        for (Spieler spieler : spieler) {
-            spielzug(spieler);
+        for (Spieler spiela : spieler) {
+            spielzug(spiela);
         }
     };
 
-    protected abstract void spielzug(Spieler spieler);
+    protected abstract boolean spielzug(Spieler spieler);
 }
