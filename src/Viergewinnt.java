@@ -100,18 +100,32 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 y < super.spielfeld.getYSize()
             ) {
                 if (!super.spielfeld.getBelegung(x, y)) {
-                    super.spielfeld.addSpielstein(getFarbe(), x, y);
+                    super.spielfeld.setSpielstein(
+                        new Spielstein(getFarbe(), x, y)
+                    );
                     Spielzug spielzug = new Spielzug(x, y, spieler);
                     this.protokolliere(spielzug);
                     return this.pruefeWeiterspielen(x, y);
                 } else {
                     System.out.println("Error: Feld ist schon belegt.");
                 }
+            } else if (x == -1) {
+                System.out.println("Error: diese Spalte ist schon voll.");
             } else {
                 System.out.println(
                     "Error: feld außerhalb des Spielfeldes gewählt."
                 );
             }
         }
+    }
+
+    @Override
+    protected boolean unentschieden() {
+        for (Spielstein spielstein : super.spielfeld.spielsteine[0]) {
+            if (spielstein == null) {
+                return false;
+            }
+        }
+        return true;
     }
 }

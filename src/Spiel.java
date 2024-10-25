@@ -11,9 +11,16 @@ public abstract class Spiel {
     public boolean durchgang() {
         for (Spieler spiela : this.spieler) {
             this.spielfeld.draw();
+
             if (!this.spielzug(spiela)) {
                 this.spielfeld.draw();
                 System.out.println("Gewonnen " + spiela.getName());
+                return false;
+            }
+
+            if (this.unentschieden()) {
+                this.spielfeld.draw();
+                System.out.println("Unentschieden");
                 return false;
             }
         }
@@ -21,4 +28,6 @@ public abstract class Spiel {
     }
 
     protected abstract boolean spielzug(Spieler spieler);
+
+    protected abstract boolean unentschieden();
 }
