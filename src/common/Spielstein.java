@@ -1,3 +1,5 @@
+package common;
+
 public class Spielstein implements Comparable<Spielstein> {
 
     private String typ;

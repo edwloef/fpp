@@ -1,3 +1,5 @@
+package common;
+
 import java.util.Stack;
 
 public interface Protokollierbar {

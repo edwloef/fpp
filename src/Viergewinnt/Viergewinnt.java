@@ -1,3 +1,6 @@
+package Viergewinnt;
+
+import common.*;
 import java.util.Scanner;
 
 //x = Zeile
@@ -20,14 +23,17 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     };
 
     public Viergewinnt(Spieler spieler_1, Spieler spieler_2) {
-        super(new Spieler[] { spieler_1, spieler_2 }, new Spielfeld(8, 8));
+        super(
+            new Spieler[] { spieler_1, spieler_2 },
+            new ViergewinntSpielfeld()
+        );
     }
 
     private int getZeile(int y) {
         int x = super.spielfeld.getXSize() - 1;
 
         while (x >= 0) {
-            if (!super.spielfeld.getBelegung(x, y)) {
+            if (!super.spielfeld.prüfeBelegt(x, y)) {
                 return x;
             }
             x -= 1;
@@ -48,7 +54,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
 
         for (int i = -3; i < 4; i++) {
             if (
-                super.spielfeld.getBelegungTyp(
+                super.spielfeld.prüfeBelegtTyp(
                     this.getFarbe(),
                     x + a * i,
                     y + b * i
@@ -80,6 +86,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         protokoll.push(spielzug);
     }
 
+    @Override
     public void entferne() {
         protokoll.pop();
     }
@@ -99,7 +106,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 y >= 0 &&
                 y < super.spielfeld.getYSize()
             ) {
-                if (!super.spielfeld.getBelegung(x, y)) {
+                if (!super.spielfeld.prüfeBelegt(x, y)) {
                     super.spielfeld.setSpielstein(
                         new Spielstein(getFarbe(), x, y)
                     );
@@ -117,15 +124,5 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 );
             }
         }
-    }
-
-    @Override
-    protected boolean unentschieden() {
-        for (Spielstein spielstein : super.spielfeld.spielsteine[0]) {
-            if (spielstein == null) {
-                return false;
-            }
-        }
-        return true;
     }
 }

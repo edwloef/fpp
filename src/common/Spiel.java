@@ -1,3 +1,5 @@
+package common;
+
 public abstract class Spiel {
 
     protected Spieler[] spieler;
@@ -18,7 +20,7 @@ public abstract class Spiel {
                 return false;
             }
 
-            if (this.unentschieden()) {
+            if (this.spielfeld.unentschieden()) {
                 this.spielfeld.draw();
                 System.out.println("Unentschieden");
                 return false;
@@ -28,6 +30,4 @@ public abstract class Spiel {
     }
 
     protected abstract boolean spielzug(Spieler spieler);
-
-    protected abstract boolean unentschieden();
 }
