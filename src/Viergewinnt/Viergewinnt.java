@@ -3,9 +3,6 @@ package Viergewinnt;
 import common.*;
 import java.util.Scanner;
 
-//x = Zeile
-//y = Spalte
-
 public class Viergewinnt extends Spiel implements Protokollierbar {
 
     Scanner sc = new Scanner(System.in);
@@ -33,7 +30,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         int x = super.spielfeld.getXSize() - 1;
 
         while (x >= 0) {
-            if (!super.spielfeld.prüfeBelegt(x, y)) {
+            if (!super.spielfeld.pruefeBelegt(x, y)) {
                 return x;
             }
             x -= 1;
@@ -54,7 +51,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
 
         for (int i = -3; i < 4; i++) {
             if (
-                super.spielfeld.prüfeBelegtTyp(
+                super.spielfeld.pruefeBelegtTyp(
                     this.getFarbe(),
                     x + a * i,
                     y + b * i
@@ -106,7 +103,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 y >= 0 &&
                 y < super.spielfeld.getYSize()
             ) {
-                if (!super.spielfeld.prüfeBelegt(x, y)) {
+                if (!super.spielfeld.pruefeBelegt(x, y)) {
                     super.spielfeld.setSpielstein(
                         new Spielstein(getFarbe(), x, y)
                     );

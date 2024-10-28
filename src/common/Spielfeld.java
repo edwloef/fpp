@@ -18,7 +18,7 @@ public abstract class Spielfeld {
         return this.spielsteine[0].length;
     }
 
-    public boolean prüfeBelegt(int x, int y) {
+    public boolean pruefeBelegt(int x, int y) {
         if (x < 0 || y < 0 || x >= this.getXSize() || y >= this.getYSize()) {
             return false;
         }
@@ -26,8 +26,8 @@ public abstract class Spielfeld {
         return this.spielsteine[x][y] != null;
     }
 
-    public boolean prüfeBelegtTyp(String typ, int x, int y) {
-        if (!this.prüfeBelegt(x, y)) {
+    public boolean pruefeBelegtTyp(String typ, int x, int y) {
+        if (!this.pruefeBelegt(x, y)) {
             return false;
         }
 
