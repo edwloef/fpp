@@ -32,13 +32,13 @@ public class Chomp extends Spiel implements Protokollierbar {
     public boolean spielzug(Spieler spieler) {
         while (true) {
             System.out.print(
-                "Bitte wähle deine Eingabezeile " + spieler.getName() + ": "
-            );
-            int x = this.sc.nextInt() - 1;
-            System.out.print(
                 "Bitte wähle deine Eingabespalte " + spieler.getName() + ": "
             );
             int y = this.sc.nextInt() - 1;
+            System.out.print(
+                "Bitte wähle deine Eingabezeile " + spieler.getName() + ": "
+            );
+            int x = this.sc.nextInt() - 1;
             if (
                 x >= 0 &&
                 x < ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y) &&

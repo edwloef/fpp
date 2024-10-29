@@ -12,21 +12,22 @@ public class ChompSpielfeld extends Spielfeld {
     public void draw() {
         System.out.print(Spielfeld.ANSI_CLEAR);
 
-        int max_y = this.getMaxYInColumn(0);
+        int old_max_y = this.getMaxYInColumn(0);
+        int max_y = old_max_y;
         int new_max_y = max_y;
 
-        System.out.print("┌");
+        System.out.print("┌-");
         for (int i = 0; i < max_y; i++) {
             System.out.print("--");
         }
         System.out.println("┐");
 
         int max_x = this.getMaxXInRow(0);
-        for (int x = 1; x < max_x; x++) {
-            System.out.print("|");
+        for (int x = 1; x <= max_x; x++) {
+            System.out.print("| ");
 
-            new_max_y = this.getMaxYInColumn(x);
-            if (new_max_y > max_y) {
+            new_max_y = this.getMaxYInColumn(x - 1);
+            if (new_max_y > max_y || new_max_y == 0) {
                 new_max_y = max_y;
             }
 
@@ -45,21 +46,33 @@ public class ChompSpielfeld extends Spielfeld {
             }
 
             if (new_max_y != max_y) {
-                System.out.println("┘");
+                System.out.print("┘");
             } else {
-                System.out.println("|");
+                System.out.print("|");
             }
+
+            System.out.print(" ");
+            for (int y = max_y; y < old_max_y; y++) {
+                System.out.print("  ");
+            }
+            System.out.println(x);
 
             max_y = new_max_y;
         }
 
-        System.out.print("└");
+        System.out.print("└-");
 
         for (int y = 0; y < max_y; y++) {
             System.out.print("--");
         }
 
         System.out.println("┘");
+
+        System.out.print("  ");
+        for (int y = 1; y <= old_max_y; y++) {
+            System.out.print(y + " ");
+        }
+        System.out.println();
     }
 
     public int getMaxXInRow(int y) {
