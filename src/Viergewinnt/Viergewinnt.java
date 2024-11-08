@@ -68,7 +68,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         return true;
     }
 
-    protected boolean pruefeWeiterspielen(int x, int y) {
+    private boolean pruefeWeiterspielen(int x, int y) {
         for (int[] richtung : RICHTUNGSARRAY) {
             if (!this.pruefeVier(x, y, richtung[0], richtung[1])) {
                 return false;

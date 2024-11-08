@@ -11,7 +11,7 @@ public class Chomp extends Spiel implements Protokollierbar {
         super(new Spieler[] { spieler_1, spieler_2 }, new ChompSpielfeld());
     }
 
-    protected boolean pruefeWeiterspielen() {
+    private boolean pruefeWeiterspielen() {
         return !(
             super.spielfeld.pruefeBelegt(1, 0) &&
             super.spielfeld.pruefeBelegt(0, 1)
