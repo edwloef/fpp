@@ -89,7 +89,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     }
 
     @Override
-    public boolean spielzug(Spieler spieler) {
+    public boolean spielzugMensch(Spieler spieler) {
         while (true) {
             this.spielstein_typ = this.spielstein_typ ^ true;
             System.out.print(
@@ -121,5 +121,10 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 );
             }
         }
+    }
+
+    @Override
+    public boolean spielzugComputer(Spieler spieler) {
+        return false;
     }
 }

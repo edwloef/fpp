@@ -29,5 +29,17 @@ public abstract class Spiel {
         return true;
     }
 
-    protected abstract boolean spielzug(Spieler spieler);
+    protected boolean spielzug(Spieler spieler) {
+        if (spieler.getArt() == Spielerart.Mensch) {
+            return this.spielzugMensch(spieler);
+        } else if (spieler.getArt() == Spielerart.Computer) {
+            return this.spielzugComputer(spieler);
+        } else {
+            return false;
+        }
+    }
+
+    protected abstract boolean spielzugMensch(Spieler spieler);
+
+    protected abstract boolean spielzugComputer(Spieler spieler);
 }

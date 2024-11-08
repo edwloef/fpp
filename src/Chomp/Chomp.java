@@ -29,7 +29,7 @@ public class Chomp extends Spiel implements Protokollierbar {
     }
 
     @Override
-    public boolean spielzug(Spieler spieler) {
+    public boolean spielzugMensch(Spieler spieler) {
         while (true) {
             System.out.print(
                 "Bitte wähle deine Eingabespalte " + spieler.getName() + ": "
@@ -54,5 +54,10 @@ public class Chomp extends Spiel implements Protokollierbar {
                 System.out.println("Error: invalides Feld.");
             }
         }
+    }
+
+    @Override
+    public boolean spielzugComputer(Spieler spieler) {
+        return false;
     }
 }
