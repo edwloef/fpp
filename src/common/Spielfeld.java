@@ -1,12 +1,20 @@
 package common;
 
+import java.util.Scanner;
+
 public abstract class Spielfeld {
 
     protected Spielstein[][] spielsteine;
 
     protected static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
 
-    public Spielfeld(int x_size, int y_size) {
+    private Scanner sc = new Scanner(System.in);
+
+    public Spielfeld() {
+        System.out.println("Breite des Spielfelds: ");
+        int y_size = this.sc.nextInt();
+        System.out.println("Hoehe des Spielfelds: ");
+        int x_size = this.sc.nextInt();
         this.spielsteine = new Spielstein[x_size][y_size];
     }
 

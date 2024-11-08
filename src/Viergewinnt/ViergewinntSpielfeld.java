@@ -5,7 +5,7 @@ import common.*;
 public class ViergewinntSpielfeld extends Spielfeld {
 
     public ViergewinntSpielfeld() {
-        super(8, 8);
+        super();
     }
 
     @Override

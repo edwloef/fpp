@@ -5,7 +5,7 @@ import common.*;
 public class ChompSpielfeld extends Spielfeld {
 
     public ChompSpielfeld() {
-        super(4, 7);
+        super();
     }
 
     @Override

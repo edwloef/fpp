@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Chomp extends Spiel implements Protokollierbar {
 
-    Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
 
     public Chomp(Spieler spieler_1, Spieler spieler_2) {
         super(new Spieler[] { spieler_1, spieler_2 }, new ChompSpielfeld());

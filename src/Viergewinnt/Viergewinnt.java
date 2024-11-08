@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Viergewinnt extends Spiel implements Protokollierbar {
 
-    Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
     boolean spielstein_typ = false;
 
     private static final String ANSI_RED = "\033[31m"; // red output color
