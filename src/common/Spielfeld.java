@@ -26,6 +26,9 @@ public abstract class Spielfeld {
         return this.spielsteine[0].length;
     }
 
+    /**
+     *   Gibt true zurück, wenn das Feld belegt ist.
+     */
     public boolean pruefeBelegt(int x, int y) {
         if (x < 0 || y < 0 || x >= this.getXSize() || y >= this.getYSize()) {
             return false;
@@ -34,12 +37,15 @@ public abstract class Spielfeld {
         return this.spielsteine[x][y] != null;
     }
 
-    public boolean pruefeBelegtTyp(String typ, int x, int y) {
+    /**
+     *   Gibt true zurück, wenn das Feld mit einem Stein des angegebenen Spielers belegt ist.
+     */
+    public boolean pruefeBelegtSpieler(int x, int y, Spieler spieler) {
         if (!this.pruefeBelegt(x, y)) {
             return false;
         }
 
-        return this.spielsteine[x][y].getTyp().equals(typ);
+        return this.spielsteine[x][y].getToken().equals(spieler.getToken());
     }
 
     public void setSpielstein(Spielstein spielstein) {

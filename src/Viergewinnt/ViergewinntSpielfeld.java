@@ -26,7 +26,7 @@ public class ViergewinntSpielfeld extends Spielfeld {
                 if (stein == null) {
                     System.out.print(" ");
                 } else {
-                    System.out.print(stein.getTyp());
+                    System.out.print(stein.getToken());
                 }
                 System.out.print(" ");
             }
@@ -35,7 +35,7 @@ public class ViergewinntSpielfeld extends Spielfeld {
             if (stein == null) {
                 System.out.print(" ");
             } else {
-                System.out.print(stein.getTyp());
+                System.out.print(stein.getToken());
             }
 
             System.out.println("|");

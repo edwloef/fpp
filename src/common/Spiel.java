@@ -10,6 +10,9 @@ public abstract class Spiel {
         this.spielfeld = spielfeld;
     }
 
+    /**
+     *   Gibt false zurück, wenn das Spiel vorbei ist.
+     */
     public boolean durchgang() {
         for (Spieler spiela : this.spieler) {
             this.spielfeld.draw();
@@ -29,6 +32,9 @@ public abstract class Spiel {
         return true;
     }
 
+    /**
+     * Gibt false zurück, wenn der spielende Spieler gewonnen hat.
+     */
     protected boolean spielzug(Spieler spieler) {
         if (spieler.getArt() == Spielerart.Mensch) {
             return this.spielzugMensch(spieler);
