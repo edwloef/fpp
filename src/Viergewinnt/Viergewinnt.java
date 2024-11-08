@@ -1,6 +1,7 @@
 package Viergewinnt;
 
 import common.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Viergewinnt extends Spiel implements Protokollierbar {
@@ -83,10 +84,23 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     public boolean spielzugMensch(Spieler spieler) {
         while (true) {
             this.spielstein_typ = this.spielstein_typ ^ true;
-            System.out.print(
-                "Bitte wähle deine Eingabespalte " + spieler.getName() + ": "
-            );
-            int y = this.sc.nextInt() - 1;
+
+            int y;
+            while (true) {
+                try {
+                    System.out.print(
+                        "Bitte wähle deine Eingabespalte " +
+                        spieler.getName() +
+                        ": "
+                    );
+                    y = this.sc.nextInt() - 1;
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Bitte gib eine Zahl ein!");
+                    this.sc.next();
+                }
+            }
+
             int x = this.getZeile(y);
             if (
                 x >= 0 &&

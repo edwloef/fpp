@@ -1,6 +1,7 @@
 package Chomp;
 
 import common.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Chomp extends Spiel implements Protokollierbar {
@@ -31,14 +32,38 @@ public class Chomp extends Spiel implements Protokollierbar {
     @Override
     public boolean spielzugMensch(Spieler spieler) {
         while (true) {
-            System.out.print(
-                "Bitte wähle deine Eingabespalte " + spieler.getName() + ": "
-            );
-            int y = this.sc.nextInt() - 1;
-            System.out.print(
-                "Bitte wähle deine Eingabezeile " + spieler.getName() + ": "
-            );
-            int x = this.sc.nextInt() - 1;
+            int y;
+            while (true) {
+                try {
+                    System.out.print(
+                        "Bitte wähle deine Eingabespalte " +
+                        spieler.getName() +
+                        ": "
+                    );
+                    y = this.sc.nextInt() - 1;
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Bitte gib eine Zahl ein!");
+                    this.sc.next();
+                }
+            }
+
+            int x;
+            while (true) {
+                try {
+                    System.out.print(
+                        "Bitte wähle deine Eingabezeile " +
+                        spieler.getName() +
+                        ": "
+                    );
+                    x = this.sc.nextInt() - 1;
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Bitte gib eine Zahl ein!");
+                    this.sc.next();
+                }
+            }
+
             if (
                 x >= 0 &&
                 x < ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y) &&

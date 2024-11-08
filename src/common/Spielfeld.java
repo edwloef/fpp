@@ -1,5 +1,6 @@
 package common;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class Spielfeld {
@@ -11,10 +12,30 @@ public abstract class Spielfeld {
     private Scanner sc = new Scanner(System.in);
 
     public Spielfeld() {
-        System.out.println("Breite des Spielfelds: ");
-        int y_size = this.sc.nextInt();
-        System.out.println("Hoehe des Spielfelds: ");
-        int x_size = this.sc.nextInt();
+        int y_size;
+        while (true) {
+            try {
+                System.out.print("Breite des Spielfelds: ");
+                y_size = this.sc.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Bitte gib eine Zahl ein!");
+                this.sc.next();
+            }
+        }
+
+        int x_size;
+        while (true) {
+            try {
+                System.out.print("Höhe des Spielfelds: ");
+                x_size = this.sc.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Bitte gib eine Zahl ein!");
+                this.sc.next();
+            }
+        }
+
         this.spielsteine = new Spielstein[x_size][y_size];
     }
 
