@@ -6,6 +6,7 @@ public class ChompSpielfeld extends Spielfeld {
 
     public ChompSpielfeld() {
         super();
+        this.setSpielstein(new Spielstein("", 0, 0));
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ChompSpielfeld extends Spielfeld {
     }
 
     public int getMaxXInRow(int y) {
-        for (int x = 0; x < super.getXSize(); x++) {
+        for (int x = 1; x < super.getXSize(); x++) {
             if (super.pruefeBelegt(x, y)) {
                 return x;
             }
@@ -73,7 +74,7 @@ public class ChompSpielfeld extends Spielfeld {
     }
 
     public int getMaxYInColumn(int x) {
-        for (int y = 0; y < super.getYSize(); y++) {
+        for (int y = 1; y < super.getYSize(); y++) {
             if (super.pruefeBelegt(x, y)) {
                 return y;
             }

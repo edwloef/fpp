@@ -39,19 +39,6 @@ public abstract class Spielfeld {
         this.spielsteine = new Spielstein[x_size][y_size];
     }
 
-    /**
-     * erstellt eine Kopie des eingegebenen Spielfeldes
-     */
-    protected Spielfeld(Spielfeld orig) {
-        this.spielsteine = new Spielstein[orig.getXSize()][orig.getYSize()];
-
-        for (int x = 0; x < this.getXSize(); x++) {
-            for (int y = 0; y < this.getYSize(); y++) {
-                this.spielsteine[x][y] = orig.spielsteine[x][y];
-            }
-        }
-    }
-
     public int getXSize() {
         return this.spielsteine.length;
     }

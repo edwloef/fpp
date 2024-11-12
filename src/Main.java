@@ -10,14 +10,14 @@ public class Main {
     public static void main(String[] args) {
         Chomp chomp = new Chomp(
             new Spieler(
-                "Konrad",
-                Spielerart.Mensch,
-                ANSI_RED + "◉" + ANSI_RESET
-            ),
-            new Spieler(
                 "Edwin",
                 Spielerart.Mensch,
                 ANSI_BLUE + "◉" + ANSI_RESET
+            ),
+            new Spieler(
+                "Konrad",
+                Spielerart.Computer,
+                ANSI_RED + "◉" + ANSI_RESET
             )
         );
 
