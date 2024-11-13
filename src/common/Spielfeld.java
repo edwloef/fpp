@@ -13,27 +13,35 @@ public abstract class Spielfeld {
 
     public Spielfeld() {
         int y_size;
-        while (true) {
-            try {
-                System.out.print("Breite des Spielfelds: ");
-                y_size = this.sc.nextInt();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Bitte gib eine Zahl ein!");
-                this.sc.next();
-            }
-        }
-
         int x_size;
         while (true) {
-            try {
-                System.out.print("Höhe des Spielfelds: ");
-                x_size = this.sc.nextInt();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Bitte gib eine Zahl ein!");
-                this.sc.next();
+            while (true) {
+                try {
+                    System.out.print("Breite des Spielfelds: ");
+                    y_size = this.sc.nextInt();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Bitte gib eine Zahl ein!");
+                    this.sc.next();
+                }
             }
+
+            while (true) {
+                try {
+                    System.out.print("Höhe des Spielfelds: ");
+                    x_size = this.sc.nextInt();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Bitte gib eine Zahl ein!");
+                    this.sc.next();
+                }
+            }
+
+            if (x_size > 0 && y_size > 0 && (x_size > 1 || y_size > 1)) {
+                break;
+            }
+
+            System.out.println("Keine valide Spielfeldgröße");
         }
 
         this.spielsteine = new Spielstein[x_size][y_size];
