@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class Viergewinnt extends Spiel implements Protokollierbar {
 
     private Scanner sc = new Scanner(System.in);
-    boolean spielstein_typ = false;
 
     private static final int[][] RICHTUNGSARRAY = {
         { 1, -1 }, // unten links -> oben rechts
@@ -83,8 +82,6 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     @Override
     public boolean spielzugMensch(Spieler spieler) {
         while (true) {
-            this.spielstein_typ = this.spielstein_typ ^ true;
-
             int y;
             while (true) {
                 try {
