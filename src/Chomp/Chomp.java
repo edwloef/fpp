@@ -128,9 +128,9 @@ public class Chomp extends Spiel implements Protokollierbar {
         System.out.println(
             spieler.getName() +
             " hat bei " +
-            (move_x + 1) +
-            ", " +
             (move_y + 1) +
+            ", " +
+            (move_x + 1) +
             " gespielt!"
         );
 
@@ -153,9 +153,9 @@ public class Chomp extends Spiel implements Protokollierbar {
             super.spielfeld.pruefeBelegt(0, 1)
         ) {
             if (player) {
-                return (this.getDepth() - done); // falls der Computer das simulierte Spiel gewonnen hat
+                return 100 - done; // falls der Computer das simulierte Spiel gewonnen hat
             } else {
-                return -(this.getDepth() - done); // falls der Mensch das simulierte Spiel gewonnen hat
+                return done - 100; // falls der Mensch das simulierte Spiel gewonnen hat
             }
         } else if ((this.getDepth() - done) <= 0) {
             return 0;
