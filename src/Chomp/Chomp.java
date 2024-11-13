@@ -83,55 +83,37 @@ public class Chomp extends Spiel implements Protokollierbar {
 
     @Override
     public boolean spielzugComputer(Spieler spieler) {
-        int max_x = 0;
-        int max_y = 0;
+        int move_x = 0;
+        int move_y = 0;
         long max_val = Long.MIN_VALUE;
 
-        int depth = 0;
-        int minx = Integer.MAX_VALUE;
+        int max_x = Integer.MAX_VALUE;
         for (
             int y = 0;
             y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(0);
             y++
         ) {
             int x = ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y);
-
-            if (x < minx) {
-                minx = x;
-            }
-            depth += minx;
-        }
-        depth = 200 / depth;
-
-        minx = Integer.MAX_VALUE;
-        for (
-            int y = 0;
-            y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(0);
-            y++
-        ) {
-            int x = ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y);
-            if (x < minx) {
-                minx = x;
+            if (x < max_x) {
+                max_x = x;
             }
 
-            for (x = 0; x < minx; x++) {
+            for (x = 0; x < max_x; x++) {
                 if (super.spielfeld.pruefeBelegt(x, y)) {
                     continue;
                 }
 
                 super.spielfeld.setSpielstein(new Spielstein("", x, y));
 
-                long val = this.computer(true, depth);
+                long val = this.computer(true, 0);
 
                 if (val > max_val) {
                     max_val = val;
-                    max_x = x;
-                    max_y = y;
-                } else if (val == max_val) {
-                    if (Math.random() < 0.5) {
-                        max_x = x;
-                        max_y = y;
-                    }
+                    move_x = x;
+                    move_y = y;
+                } else if (val == max_val && Math.random() < 0.5) {
+                    move_x = x;
+                    move_y = y;
                 }
 
                 super.spielfeld.removeSpielstein(x, y);
@@ -139,16 +121,16 @@ public class Chomp extends Spiel implements Protokollierbar {
         }
 
         super.spielfeld.setSpielstein(
-            new Spielstein(spieler.getToken(), max_x, max_y)
+            new Spielstein(spieler.getToken(), move_x, move_y)
         );
 
         super.spielfeld.draw();
         System.out.println(
             spieler.getName() +
             " hat bei " +
-            max_x +
+            (move_x + 1) +
             ", " +
-            max_y +
+            (move_y + 1) +
             " gespielt!"
         );
 
@@ -159,17 +141,23 @@ public class Chomp extends Spiel implements Protokollierbar {
         return this.pruefeWeiterspielen();
     }
 
-    private long computer(boolean player, int limit) {
+    /**
+     * Gibt einen größeren Wert zurück, je besser das eingegebene Spielfeld für den Computer ist.
+     *
+     * Das eingegebene Spielfeld ist gut, falls der Computer oft in wenigen Zügen gewinnen kann,
+     * und schlecht, falls der Mensch oft in wenigen Zügen gewinnen kann.
+     */
+    private long computer(boolean player, int done) {
         if (
             super.spielfeld.pruefeBelegt(1, 0) &&
             super.spielfeld.pruefeBelegt(0, 1)
         ) {
             if (player) {
-                return 1;
+                return (this.getDepth() - done); // falls der Computer das simulierte Spiel gewonnen hat
             } else {
-                return -10;
+                return -(this.getDepth() - done); // falls der Mensch das simulierte Spiel gewonnen hat
             }
-        } else if (limit == 0) {
+        } else if ((this.getDepth() - done) <= 0) {
             return 0;
         }
 
@@ -192,12 +180,33 @@ public class Chomp extends Spiel implements Protokollierbar {
 
                 super.spielfeld.setSpielstein(new Spielstein("", x, y));
 
-                sum += this.computer(!player, limit - 1);
+                sum += this.computer(!player, done + 1);
 
                 super.spielfeld.removeSpielstein(x, y);
             }
         }
 
         return sum;
+    }
+
+    private int getDepth() {
+        int depth = 0;
+        int max_x = Integer.MAX_VALUE;
+
+        for (
+            int y = 0;
+            y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(0);
+            y++
+        ) {
+            int x = ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y);
+
+            if (x < max_x) {
+                max_x = x;
+            }
+
+            depth += max_x;
+        }
+
+        return 100 / depth;
     }
 }
