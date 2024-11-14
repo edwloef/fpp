@@ -9,31 +9,30 @@ public abstract class Spielfeld {
 
     protected static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
 
-    private Scanner sc = new Scanner(System.in);
-
     public Spielfeld() {
+        Scanner sc = new Scanner(System.in);
         int y_size;
         int x_size;
         while (true) {
             while (true) {
                 try {
                     System.out.print("Breite des Spielfelds: ");
-                    y_size = this.sc.nextInt();
+                    y_size = sc.nextInt();
                     break;
                 } catch (InputMismatchException e) {
                     System.out.println("Bitte gib eine Zahl ein!");
-                    this.sc.next();
+                    sc.next();
                 }
             }
 
             while (true) {
                 try {
                     System.out.print("Höhe des Spielfelds: ");
-                    x_size = this.sc.nextInt();
+                    x_size = sc.nextInt();
                     break;
                 } catch (InputMismatchException e) {
                     System.out.println("Bitte gib eine Zahl ein!");
-                    this.sc.next();
+                    sc.next();
                 }
             }
 

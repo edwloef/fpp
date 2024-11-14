@@ -1,10 +1,10 @@
 package common;
 
-public class Spielstein implements Comparable<Spielstein> {
+public class Spielstein {
 
-    private String token;
-    private int x;
-    private int y;
+    private final String token;
+    private final int x;
+    private final int y;
 
     public Spielstein(String typ, int x, int y) {
         this.token = typ;
@@ -22,19 +22,6 @@ public class Spielstein implements Comparable<Spielstein> {
 
     public int getY() {
         return this.y;
-    }
-
-    @Override
-    public int compareTo(Spielstein arg0) {
-        if (
-            this.getX() == arg0.getX() &&
-            this.getY() == arg0.getY() &&
-            this.getToken().equals(arg0.getToken())
-        ) {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 
     @Override

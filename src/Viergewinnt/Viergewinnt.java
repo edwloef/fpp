@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Viergewinnt extends Spiel implements Protokollierbar {
 
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     private static final int[][] RICHTUNGSARRAY = {
         { 1, -1 }, // unten links -> oben rechts
@@ -113,7 +113,6 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
             if (
                 x >= 0 &&
                 x < super.spielfeld.getXSize() &&
-                y >= 0 &&
                 y < super.spielfeld.getYSize()
             ) {
                 if (!super.spielfeld.pruefeBelegt(x, y)) {
@@ -141,7 +140,6 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         int move_x = 0;
         int move_y = 0;
         int max_val = 0;
-        int maxProbebility = 0;
         for (int y = 0; y < super.spielfeld.getYSize(); y++) {
             int x = this.getZeile(y);
             if (x < 0) {

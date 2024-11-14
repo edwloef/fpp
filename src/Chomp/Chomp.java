@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Chomp extends Spiel implements Protokollierbar {
 
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public Chomp(Spieler spieler_1, Spieler spieler_2) {
         super(new Spieler[] { spieler_1, spieler_2 }, new ChompSpielfeld());
@@ -145,7 +145,6 @@ public class Chomp extends Spiel implements Protokollierbar {
 
     /**
      * Gibt einen größeren Wert zurück, je besser das eingegebene Spielfeld für den Computer ist.
-     *
      * Das eingegebene Spielfeld ist gut, falls der Computer oft in wenigen Zügen gewinnen kann,
      * und schlecht, falls der Mensch oft in wenigen Zügen gewinnen kann.
      */

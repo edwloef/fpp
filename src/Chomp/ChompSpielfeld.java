@@ -15,19 +15,12 @@ public class ChompSpielfeld extends Spielfeld {
 
         int len = ("" + this.getYSize()).length() + 1;
 
-        String full = "";
-        for (int i = 0; i < len; i++) {
-            full += "▒";
-        }
-
-        String empty = "";
-        for (int i = 0; i < len; i++) {
-            empty += " ";
-        }
+        String full = "▒".repeat(len);
+        String empty = " ".repeat(len);
 
         int width = getMaxYInColumn(0);
         int max_y = width;
-        int new_max_y = max_y;
+        int new_max_y;
         for (int x = 1; x <= this.getMaxXInRow(0); x++) {
             new_max_y = this.getMaxYInColumn(x - 1);
             if (new_max_y > max_y) {
@@ -52,9 +45,9 @@ public class ChompSpielfeld extends Spielfeld {
         }
 
         for (int y = 1; y <= width; y++) {
-            String output_num = "" + y;
+            StringBuilder output_num = new StringBuilder("" + y);
             while (output_num.length() < len) {
-                output_num += " ";
+                output_num.append(" ");
             }
             System.out.print(output_num);
         }

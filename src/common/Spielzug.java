@@ -2,9 +2,9 @@ package common;
 
 public class Spielzug {
 
-    private int x;
-    private int y;
-    private Spieler spieler;
+    private final int x;
+    private final int y;
+    private final Spieler spieler;
 
     public Spielzug(int x, int y, Spieler spieler) {
         this.x = x;

@@ -2,9 +2,9 @@ package common;
 
 public class Spieler {
 
-    private String name;
-    private Spielerart art;
-    private String token;
+    private final String name;
+    private final Spielerart art;
+    private final String token;
 
     public Spieler(String name, Spielerart art, String token) {
         this.name = name;
@@ -36,6 +36,4 @@ public class Spieler {
             "}"
         );
     }
-
-    
 }
