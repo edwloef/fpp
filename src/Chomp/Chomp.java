@@ -13,10 +13,8 @@ public class Chomp extends Spiel implements Protokollierbar {
     }
 
     private boolean pruefeWeiterspielen() {
-        return !(
-            super.spielfeld.pruefeBelegt(1, 0) &&
-            super.spielfeld.pruefeBelegt(0, 1)
-        );
+        return !(super.spielfeld.pruefeBelegt(1, 0) &&
+                super.spielfeld.pruefeBelegt(0, 1));
     }
 
     @Override
@@ -36,10 +34,9 @@ public class Chomp extends Spiel implements Protokollierbar {
             while (true) {
                 try {
                     System.out.print(
-                        "Bitte wähle deine Eingabespalte " +
-                        spieler.getName() +
-                        ": "
-                    );
+                            "Bitte wähle deine Eingabespalte " +
+                                    spieler.getName() +
+                                    ": ");
                     y = this.sc.nextInt() - 1;
                     break;
                 } catch (InputMismatchException e) {
@@ -52,10 +49,9 @@ public class Chomp extends Spiel implements Protokollierbar {
             while (true) {
                 try {
                     System.out.print(
-                        "Bitte wähle deine Eingabezeile " +
-                        spieler.getName() +
-                        ": "
-                    );
+                            "Bitte wähle deine Eingabezeile " +
+                                    spieler.getName() +
+                                    ": ");
                     x = this.sc.nextInt() - 1;
                     break;
                 } catch (InputMismatchException e) {
@@ -64,13 +60,11 @@ public class Chomp extends Spiel implements Protokollierbar {
                 }
             }
 
-            if (
-                x >= 0 &&
-                x < ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y) &&
-                y >= 0 &&
-                y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(x) &&
-                (x != 0 || y != 0)
-            ) {
+            if (x >= 0 &&
+                    x < ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y) &&
+                    y >= 0 &&
+                    y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(x) &&
+                    (x != 0 || y != 0)) {
                 super.spielfeld.setSpielstein(new Spielstein("", x, y));
                 Spielzug spielzug = new Spielzug(x, y, spieler);
                 this.protokolliere(spielzug);

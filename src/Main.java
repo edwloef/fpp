@@ -1,4 +1,4 @@
-import Chomp.*;
+import Viergewinnt.*;
 import common.*;
 
 public class Main {
@@ -8,19 +8,16 @@ public class Main {
     private static final String ANSI_RESET = "\033[0m"; // reset output color
 
     public static void main(String[] args) {
-        Chomp chomp = new Chomp(
-            new Spieler(
-                "Edwin",
-                Spielerart.Mensch,
-                ANSI_BLUE + "◉" + ANSI_RESET
-            ),
-            new Spieler(
-                "Konrad",
-                Spielerart.Computer,
-                ANSI_RED + "◉" + ANSI_RESET
-            )
-        );
-
-        while (chomp.durchgang()) {}
+        Viergewinnt viergewinnt = new Viergewinnt(
+                new Spieler(
+                        "Wedeke",
+                        Spielerart.Mensch,
+                        ANSI_BLUE + "◉" + ANSI_RESET),
+                new Spieler(
+                        "Edwin",
+                        Spielerart.Computer,
+                        ANSI_RED + "◉" + ANSI_RESET));
+        while (viergewinnt.durchgang()) {
+        }
     }
 }
