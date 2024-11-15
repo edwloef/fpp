@@ -198,6 +198,8 @@ public class Chomp extends Spiel implements Protokollierbar {
 
     private int getDepth() {
         int depth = 0;
+        int width = ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(0);
+        int height = ((ChompSpielfeld) super.spielfeld).getMaxXInRow(0);
         int max_x = Integer.MAX_VALUE;
 
         for (
@@ -214,8 +216,6 @@ public class Chomp extends Spiel implements Protokollierbar {
             depth += max_x;
         }
 
-        return (
-            (super.spielfeld.getXSize() * super.spielfeld.getYSize()) / depth
-        );
+        return ((width * height) / depth);
     }
 }
