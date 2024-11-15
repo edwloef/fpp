@@ -1,23 +1,23 @@
-package Viergewinnt;
+package viergewinnt;
 
 import common.*;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Viergewinnt extends Spiel implements Protokollierbar {
 
+    private static final int[][] RICHTUNGSARRAY = {
+        {1, -1}, // unten links → oben rechts
+        {1, 0}, // unten → oben
+        {1, 1}, // unten rechts → oben links
+        {0, 1}, // rechts → links
+    };
     private final Scanner sc = new Scanner(System.in);
 
-    private static final int[][] RICHTUNGSARRAY = {
-        { 1, -1 }, // unten links -> oben rechts
-        { 1, 0 }, // unten -> oben
-        { 1, 1 }, // unten rechts -> oben links
-        { 0, 1 }, // rechts -> links
-    };
-
-    public Viergewinnt(Spieler spieler_1, Spieler spieler_2) {
+    public Viergewinnt(Spieler spieler1, Spieler spieler2) {
         super(
-            new Spieler[] { spieler_1, spieler_2 },
+            new Spieler[]{spieler1, spieler2},
             new ViergewinntSpielfeld()
         );
     }
@@ -29,7 +29,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         int x = super.spielfeld.getXSize() - 1;
 
         while (x >= 0) {
-            if (!super.spielfeld.pruefeBelegt(x, y)) {
+            if (!super.spielfeld.prüfeBelegt(x, y)) {
                 return x;
             }
             x -= 1;
@@ -39,19 +39,19 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
 
     /**
      * Prüft, ob es vier zusammenhängende Felder des angegebenen Spielers an der
-     * Stelle (x,y) in der Richtung (a, b) gibt.
+     * Stelle (x, y) in der Richtung (a, b) gibt.
      */
-    private boolean pruefeVier(int x, int y, int a, int b, Spieler spieler) {
+    private boolean prüfeVier(int x, int y, int a, int b, Spieler spieler) {
         int counter = 0;
 
         for (int i = -3; i < 4; i++) {
             if (
                 i == 0 ||
-                super.spielfeld.pruefeBelegtSpieler(
-                    x + a * i,
-                    y + b * i,
-                    spieler
-                )
+                    super.spielfeld.prüfeBelegtSpieler(
+                        x + a * i,
+                        y + b * i,
+                        spieler
+                    )
             ) {
                 if (counter == 3) {
                     return true;
@@ -64,9 +64,9 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         return false;
     }
 
-    private boolean pruefeWeiterspielen(int x, int y, Spieler spieler) {
+    private boolean prüfeWeiterspielen(int x, int y, Spieler spieler) {
         for (int[] richtung : RICHTUNGSARRAY) {
-            if (this.pruefeVier(x, y, richtung[0], richtung[1], spieler)) {
+            if (this.prüfeVier(x, y, richtung[0], richtung[1], spieler)) {
                 return false;
             }
             System.out.println();
@@ -92,8 +92,8 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 try {
                     System.out.print(
                         "Bitte wähle deine Eingabespalte " +
-                        spieler.getName() +
-                        ": "
+                            spieler.getName() +
+                            ": "
                     );
                     y = this.sc.nextInt() - 1;
                     if (y < 0 || y > (super.spielfeld.getYSize() - 1)) {
@@ -112,16 +112,16 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
             int x = this.getZeile(y);
             if (
                 x >= 0 &&
-                x < super.spielfeld.getXSize() &&
-                y < super.spielfeld.getYSize()
+                    x < super.spielfeld.getXSize() &&
+                    y < super.spielfeld.getYSize()
             ) {
-                if (!super.spielfeld.pruefeBelegt(x, y)) {
+                if (!super.spielfeld.prüfeBelegt(x, y)) {
                     super.spielfeld.setSpielstein(
                         new Spielstein(spieler.getToken(), x, y)
                     );
                     Spielzug spielzug = new Spielzug(x, y, spieler);
                     this.protokolliere(spielzug);
-                    return this.pruefeWeiterspielen(x, y, spieler);
+                    return this.prüfeWeiterspielen(x, y, spieler);
                 } else {
                     System.out.println("Error: Feld ist schon belegt.");
                 }
@@ -137,9 +137,9 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
 
     @Override
     public boolean spielzugComputer(Spieler spieler) {
-        int move_x = 0;
-        int move_y = 0;
-        int max_val = 0;
+        int moveX = 0;
+        int moveY = 0;
+        int maxVal = 0;
 
         boolean win = false;
         for (int y = 0; y < super.spielfeld.getYSize(); y++) {
@@ -148,10 +148,10 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 continue;
             }
 
-            if (!this.pruefeWeiterspielen(x, y, spieler)) {
+            if (!this.prüfeWeiterspielen(x, y, spieler)) {
                 win = true;
-                move_x = x;
-                move_y = y;
+                moveX = x;
+                moveY = y;
                 break;
             }
         }
@@ -164,46 +164,47 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 }
 
                 if (this.checkGefahr(x, y, spieler)) {
-                    move_x = x;
-                    move_y = y;
+                    moveX = x;
+                    moveY = y;
                     break;
                 } else {
                     int val = this.computer(x, y, spieler);
 
-                    if (val > max_val) {
-                        max_val = val;
-                        move_x = x;
-                        move_y = y;
+                    if (val > maxVal) {
+                        maxVal = val;
+                        moveX = x;
+                        moveY = y;
                     }
                 }
             }
         }
 
         super.spielfeld.setSpielstein(
-            new Spielstein(spieler.getToken(), move_x, move_y)
+            new Spielstein(spieler.getToken(), moveX, moveY)
         );
-        Spielzug spielzug = new Spielzug(move_x, move_y, spieler);
+        Spielzug spielzug = new Spielzug(moveX, moveY, spieler);
         this.protokolliere(spielzug);
 
         super.spielfeld.draw();
         System.out.println(
             spieler.getName() +
-            " hat bei " +
-            (move_y + 1) +
-            ", " +
-            (move_x + 1) +
-            " gespielt!"
+                " hat bei " +
+                (moveY + 1) +
+                ", " +
+                (moveX + 1) +
+                " gespielt!"
         );
 
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException ignored) {
+        }
 
-        return this.pruefeWeiterspielen(move_x, move_y, spieler);
+        return this.prüfeWeiterspielen(moveX, moveY, spieler);
     }
 
     /**
-     * Gibt zurück, ob der Gegner mit dem nachsten Zug gewinnt oder eine Zwickmühle erzeugt.
+     * Gibt zurück, ob der Gegner mit dem nächsten Zug gewinnt oder eine Zwickmühle erzeugt.
      */
     private boolean checkGefahr(int x, int y, Spieler spieler) {
         Spieler gegner;
@@ -226,7 +227,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                 new Spielstein(gegner.getToken(), x1, y1)
             );
 
-            if (!this.pruefeWeiterspielen(x, y, gegner)) {
+            if (!this.prüfeWeiterspielen(x, y, gegner)) {
                 counter++;
             }
 
@@ -235,7 +236,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
 
         super.spielfeld.removeSpielstein(x, y);
 
-        return counter >= 2 || !this.pruefeWeiterspielen(x, y, gegner);
+        return counter >= 2 || !this.prüfeWeiterspielen(x, y, gegner);
     }
 
     /**
@@ -251,7 +252,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
             int counterSame = 0; // counter für die vom Computer belegten Felder
             for (int i = -3; i <= -1; i++) {
                 if (
-                    super.spielfeld.pruefeBelegtSpieler(
+                    super.spielfeld.prüfeBelegtSpieler(
                         x + a * i,
                         y + b * i,
                         spieler
@@ -260,13 +261,13 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                     // falls das Feld vom Computer belegt ist
                     counterSame++;
                 } else if (
-                    !super.spielfeld.pruefeBelegt((x + a * i), (y + b * i))
+                           !super.spielfeld.prüfeBelegt((x + a * i), (y + b * i))
                 ) {
                     if (
                         !((x + a * i) < 0 ||
-                            (y + b * i) < 0 ||
-                            (x + a * i) >= spielfeld.getXSize() ||
-                            (y + b * i) >= spielfeld.getYSize())
+                              (y + b * i) < 0 ||
+                              (x + a * i) >= spielfeld.getXSize() ||
+                              (y + b * i) >= spielfeld.getYSize())
                     ) {
                         // falls das Feld innerhalb des Spielfeldes liegt und unbelegt ist
                         counterFree++;
@@ -278,7 +279,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
             }
             for (int i = 1; i < 4; i++) {
                 if (
-                    super.spielfeld.pruefeBelegtSpieler(
+                    super.spielfeld.prüfeBelegtSpieler(
                         x + a * i,
                         y + b * i,
                         spieler
@@ -287,13 +288,13 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                     // falls das Feld vom Computer belegt ist
                     counterSame++;
                 } else if (
-                    !super.spielfeld.pruefeBelegt((x + a * i), (y + b * i))
+                           !super.spielfeld.prüfeBelegt((x + a * i), (y + b * i))
                 ) {
                     if (
                         !((x + a * i) < 0 ||
-                            (y + b * i) < 0 ||
-                            (x + a * i) >= spielfeld.getXSize() ||
-                            (y + b * i) >= spielfeld.getYSize())
+                              (y + b * i) < 0 ||
+                              (x + a * i) >= spielfeld.getXSize() ||
+                              (y + b * i) >= spielfeld.getYSize())
                     ) {
                         // falls das Feld innerhalb des Spielfeldes liegt und unbelegt ist
                         counterFree++;

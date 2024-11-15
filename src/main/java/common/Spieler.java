@@ -28,12 +28,12 @@ public class Spieler {
     public String toString() {
         return (
             "{name: " +
-            this.name +
-            ", art: " +
-            this.art +
-            ", token: " +
-            this.token +
-            "}"
+                this.name +
+                ", art: " +
+                this.art +
+                ", token: " +
+                this.token +
+                "}"
         );
     }
 }

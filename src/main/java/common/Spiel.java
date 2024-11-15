@@ -2,8 +2,8 @@ package common;
 
 public abstract class Spiel {
 
-    protected Spieler[] spieler;
-    protected Spielfeld spielfeld;
+    protected final Spieler[] spieler;
+    protected final Spielfeld spielfeld;
 
     public Spiel(Spieler[] spieler, Spielfeld spielfeld) {
         this.spieler = spieler;
@@ -11,15 +11,15 @@ public abstract class Spiel {
     }
 
     /**
-     *   Gibt false zurück, wenn das Spiel vorbei ist.
+     * Gibt false zurück, wenn das Spiel vorbei ist.
      */
     public boolean durchgang() {
-        for (Spieler spiela : this.spieler) {
+        for (Spieler s : this.spieler) {
             this.spielfeld.draw();
 
-            if (!this.spielzug(spiela)) {
+            if (!this.spielzug(s)) {
                 this.spielfeld.draw();
-                System.out.println("Gewonnen " + spiela.getName());
+                System.out.println("Gewonnen " + s.getName());
                 return false;
             }
 

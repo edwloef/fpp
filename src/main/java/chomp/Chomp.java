@@ -1,6 +1,7 @@
-package Chomp;
+package chomp;
 
 import common.*;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -8,14 +9,14 @@ public class Chomp extends Spiel implements Protokollierbar {
 
     private final Scanner sc = new Scanner(System.in);
 
-    public Chomp(Spieler spieler_1, Spieler spieler_2) {
-        super(new Spieler[] { spieler_1, spieler_2 }, new ChompSpielfeld());
+    public Chomp(Spieler spieler1, Spieler spieler2) {
+        super(new Spieler[]{spieler1, spieler2}, new ChompSpielfeld());
     }
 
-    private boolean pruefeWeiterspielen() {
+    private boolean prüfeWeiterspielen() {
         return !(
-            super.spielfeld.pruefeBelegt(1, 0) &&
-            super.spielfeld.pruefeBelegt(0, 1)
+            super.spielfeld.prüfeBelegt(1, 0) &&
+                super.spielfeld.prüfeBelegt(0, 1)
         );
     }
 
@@ -37,8 +38,8 @@ public class Chomp extends Spiel implements Protokollierbar {
                 try {
                     System.out.print(
                         "Bitte wähle deine Eingabespalte " +
-                        spieler.getName() +
-                        ": "
+                            spieler.getName() +
+                            ": "
                     );
                     y = this.sc.nextInt() - 1;
                     break;
@@ -53,8 +54,8 @@ public class Chomp extends Spiel implements Protokollierbar {
                 try {
                     System.out.print(
                         "Bitte wähle deine Eingabezeile " +
-                        spieler.getName() +
-                        ": "
+                            spieler.getName() +
+                            ": "
                     );
                     x = this.sc.nextInt() - 1;
                     break;
@@ -66,15 +67,15 @@ public class Chomp extends Spiel implements Protokollierbar {
 
             if (
                 x >= 0 &&
-                x < ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y) &&
-                y >= 0 &&
-                y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(x) &&
-                (x != 0 || y != 0)
+                    x < ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y) &&
+                    y >= 0 &&
+                    y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(x) &&
+                    (x != 0 || y != 0)
             ) {
                 super.spielfeld.setSpielstein(new Spielstein("", x, y));
                 Spielzug spielzug = new Spielzug(x, y, spieler);
                 this.protokolliere(spielzug);
-                return this.pruefeWeiterspielen();
+                return this.prüfeWeiterspielen();
             } else {
                 System.out.println("Error: invalides Feld.");
             }
@@ -83,23 +84,23 @@ public class Chomp extends Spiel implements Protokollierbar {
 
     @Override
     public boolean spielzugComputer(Spieler spieler) {
-        int move_x = 0;
-        int move_y = 0;
-        long max_val = Long.MIN_VALUE;
+        int moveX = 0;
+        int moveY = 0;
+        long maxVal = Long.MIN_VALUE;
 
-        int max_x = Integer.MAX_VALUE;
+        int maxX = Integer.MAX_VALUE;
         for (
             int y = 0;
             y < ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(0);
             y++
         ) {
             int x = ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y);
-            if (x < max_x) {
-                max_x = x;
+            if (x < maxX) {
+                maxX = x;
             }
 
-            for (x = 0; x < max_x; x++) {
-                if (super.spielfeld.pruefeBelegt(x, y)) {
+            for (x = 0; x < maxX; x++) {
+                if (super.spielfeld.prüfeBelegt(x, y)) {
                     continue;
                 }
 
@@ -107,13 +108,13 @@ public class Chomp extends Spiel implements Protokollierbar {
 
                 long val = this.computer(true, 0);
 
-                if (val > max_val) {
-                    max_val = val;
-                    move_x = x;
-                    move_y = y;
-                } else if (val == max_val && Math.random() < 0.5) {
-                    move_x = x;
-                    move_y = y;
+                if (val > maxVal) {
+                    maxVal = val;
+                    moveX = x;
+                    moveY = y;
+                } else if (val == maxVal && Math.random() < 0.5) {
+                    moveX = x;
+                    moveY = y;
                 }
 
                 super.spielfeld.removeSpielstein(x, y);
@@ -121,26 +122,27 @@ public class Chomp extends Spiel implements Protokollierbar {
         }
 
         super.spielfeld.setSpielstein(
-            new Spielstein(spieler.getToken(), move_x, move_y)
+            new Spielstein(spieler.getToken(), moveX, moveY)
         );
-        Spielzug spielzug = new Spielzug(move_x, move_y, spieler);
+        Spielzug spielzug = new Spielzug(moveX, moveY, spieler);
         this.protokolliere(spielzug);
 
         super.spielfeld.draw();
         System.out.println(
             spieler.getName() +
-            " hat bei " +
-            (move_y + 1) +
-            ", " +
-            (move_x + 1) +
-            " gespielt!"
+                " hat bei " +
+                (moveY + 1) +
+                ", " +
+                (moveX + 1) +
+                " gespielt!"
         );
 
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException ignored) {
+        }
 
-        return this.pruefeWeiterspielen();
+        return this.prüfeWeiterspielen();
     }
 
     /**
@@ -150,18 +152,18 @@ public class Chomp extends Spiel implements Protokollierbar {
      */
     private long computer(boolean player, int done) {
         if (
-            super.spielfeld.pruefeBelegt(1, 0) &&
-            super.spielfeld.pruefeBelegt(0, 1)
+            super.spielfeld.prüfeBelegt(1, 0) &&
+                super.spielfeld.prüfeBelegt(0, 1)
         ) {
             if (player) {
                 return (
-                    super.spielfeld.getXSize() * super.spielfeld.getYSize() -
-                    done
+                    (long) super.spielfeld.getXSize() * super.spielfeld.getYSize() -
+                        done
                 ); // falls der Computer das simulierte Spiel gewonnen hat
             } else {
                 return (
                     done -
-                    super.spielfeld.getXSize() * super.spielfeld.getYSize()
+                        (long) super.spielfeld.getXSize() * super.spielfeld.getYSize()
                 ); // falls der Mensch das simulierte Spiel gewonnen hat
             }
         } else if ((this.getDepth() - done) <= 0) {
@@ -181,7 +183,7 @@ public class Chomp extends Spiel implements Protokollierbar {
             }
 
             for (x = 0; x < minx; x++) {
-                if (spielfeld.pruefeBelegt(x, y)) {
+                if (spielfeld.prüfeBelegt(x, y)) {
                     continue;
                 }
 
@@ -200,7 +202,7 @@ public class Chomp extends Spiel implements Protokollierbar {
         int depth = 0;
         int width = ((ChompSpielfeld) super.spielfeld).getMaxYInColumn(0);
         int height = ((ChompSpielfeld) super.spielfeld).getMaxXInRow(0);
-        int max_x = Integer.MAX_VALUE;
+        int maxX = Integer.MAX_VALUE;
 
         for (
             int y = 0;
@@ -209,11 +211,11 @@ public class Chomp extends Spiel implements Protokollierbar {
         ) {
             int x = ((ChompSpielfeld) super.spielfeld).getMaxXInRow(y);
 
-            if (x < max_x) {
-                max_x = x;
+            if (x < maxX) {
+                maxX = x;
             }
 
-            depth += max_x;
+            depth += maxX;
         }
 
         return ((width * height) / depth);

@@ -5,19 +5,18 @@ import java.util.Scanner;
 
 public abstract class Spielfeld {
 
-    protected Spielstein[][] spielsteine;
-
     protected static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
+    protected final Spielstein[][] spielsteine;
 
     public Spielfeld() {
         Scanner sc = new Scanner(System.in);
-        int y_size;
-        int x_size;
+        int ySize;
+        int xSize;
         while (true) {
             while (true) {
                 try {
                     System.out.print("Breite des Spielfelds: ");
-                    y_size = sc.nextInt();
+                    ySize = sc.nextInt();
                     break;
                 } catch (InputMismatchException e) {
                     System.out.println("Bitte gib eine Zahl ein!");
@@ -28,7 +27,7 @@ public abstract class Spielfeld {
             while (true) {
                 try {
                     System.out.print("Höhe des Spielfelds: ");
-                    x_size = sc.nextInt();
+                    xSize = sc.nextInt();
                     break;
                 } catch (InputMismatchException e) {
                     System.out.println("Bitte gib eine Zahl ein!");
@@ -36,14 +35,14 @@ public abstract class Spielfeld {
                 }
             }
 
-            if (x_size > 0 && y_size > 0 && (x_size > 1 || y_size > 1)) {
+            if (xSize > 0 && ySize > 0 && (xSize > 1 || ySize > 1)) {
                 break;
             }
 
             System.out.println("Keine valide Spielfeldgröße");
         }
 
-        this.spielsteine = new Spielstein[x_size][y_size];
+        this.spielsteine = new Spielstein[xSize][ySize];
     }
 
     public int getXSize() {
@@ -55,9 +54,9 @@ public abstract class Spielfeld {
     }
 
     /**
-     *   Gibt true zurück, wenn das Feld belegt ist.
+     * Gibt true zurück, wenn das Feld belegt ist.
      */
-    public boolean pruefeBelegt(int x, int y) {
+    public boolean prüfeBelegt(int x, int y) {
         if (x < 0 || y < 0 || x >= this.getXSize() || y >= this.getYSize()) {
             return false;
         }
@@ -66,10 +65,10 @@ public abstract class Spielfeld {
     }
 
     /**
-     *   Gibt true zurück, wenn das Feld mit einem Stein des angegebenen Spielers belegt ist.
+     * Gibt true zurück, wenn das Feld mit einem Stein des angegebenen Spielers belegt ist.
      */
-    public boolean pruefeBelegtSpieler(int x, int y, Spieler spieler) {
-        if (!this.pruefeBelegt(x, y)) {
+    public boolean prüfeBelegtSpieler(int x, int y, Spieler spieler) {
+        if (!this.prüfeBelegt(x, y)) {
             return false;
         }
 

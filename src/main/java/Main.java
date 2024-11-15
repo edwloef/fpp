@@ -1,6 +1,9 @@
-import Chomp.*;
-import Viergewinnt.*;
-import common.*;
+import chomp.Chomp;
+import common.Spiel;
+import common.Spieler;
+import common.Spielerart;
+import viergewinnt.Viergewinnt;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -17,7 +20,7 @@ public class Main {
         while (true) {
             try {
                 System.out.print(
-                    "Gib ein, welches Spiel du spielen möchtest: 1 ist Viergewinnt, 2 ist Chomp: "
+                    "Gib ein, welches Spiel du spielen möchtest: 1 ist Vier Gewinnt, 2 ist Chomp: "
                 );
                 welchesSpiel = sc.nextInt();
             } catch (InputMismatchException e) {
@@ -75,6 +78,7 @@ public class Main {
             spiel = new Chomp(spieler1, spieler2);
         }
 
-        while (spiel.durchgang()) {}
+        while (spiel.durchgang()) {
+        }
     }
 }

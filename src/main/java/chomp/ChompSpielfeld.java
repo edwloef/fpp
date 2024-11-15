@@ -1,6 +1,7 @@
-package Chomp;
+package chomp;
 
-import common.*;
+import common.Spielfeld;
+import common.Spielstein;
 
 public class ChompSpielfeld extends Spielfeld {
 
@@ -19,44 +20,44 @@ public class ChompSpielfeld extends Spielfeld {
         String empty = " ".repeat(len);
 
         int width = getMaxYInColumn(0);
-        int max_y = width;
-        int new_max_y;
+        int maxY = width;
+        int newMaxY;
         for (int x = 1; x <= this.getMaxXInRow(0); x++) {
-            new_max_y = this.getMaxYInColumn(x - 1);
-            if (new_max_y > max_y) {
-                new_max_y = max_y;
+            newMaxY = this.getMaxYInColumn(x - 1);
+            if (newMaxY > maxY) {
+                newMaxY = maxY;
             }
 
-            for (int y = 0; y < new_max_y; y++) {
+            for (int y = 0; y < newMaxY; y++) {
                 System.out.print(full);
             }
 
-            for (int y = new_max_y; y < max_y; y++) {
+            for (int y = newMaxY; y < maxY; y++) {
                 System.out.print(empty);
             }
 
             System.out.print(" ");
-            for (int y = max_y; y < width; y++) {
+            for (int y = maxY; y < width; y++) {
                 System.out.print(empty);
             }
             System.out.println(x);
 
-            max_y = new_max_y;
+            maxY = newMaxY;
         }
 
         for (int y = 1; y <= width; y++) {
-            StringBuilder output_num = new StringBuilder("" + y);
-            while (output_num.length() < len) {
-                output_num.append(" ");
+            StringBuilder outputNum = new StringBuilder("" + y);
+            while (outputNum.length() < len) {
+                outputNum.append(" ");
             }
-            System.out.print(output_num);
+            System.out.print(outputNum);
         }
         System.out.println();
     }
 
     public int getMaxXInRow(int y) {
         for (int x = 1; x < super.getXSize(); x++) {
-            if (super.pruefeBelegt(x, y)) {
+            if (super.prüfeBelegt(x, y)) {
                 return x;
             }
         }
@@ -66,7 +67,7 @@ public class ChompSpielfeld extends Spielfeld {
 
     public int getMaxYInColumn(int x) {
         for (int y = 1; y < super.getYSize(); y++) {
-            if (super.pruefeBelegt(x, y)) {
+            if (super.prüfeBelegt(x, y)) {
                 return y;
             }
         }
