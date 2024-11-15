@@ -9,7 +9,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class TcpServer extends Thread {
-    private static final Logger logger = LogManager.getLogManager().getLogger("TcpServer");
+    private static final Logger logger = LogManager.getLogManager().getLogger(TcpServer.class.getName());
     private final int port;
     private final TcpStreamAction action;
 
@@ -31,7 +31,7 @@ public class TcpServer extends Thread {
                 new TcpStream(socket, this.action).start();
             }
         } catch (IOException e) {
-            TcpServer.logger.log(Level.SEVERE, e.toString());
+            TcpServer.logger.log(Level.SEVERE, e.toString(), e);
         }
     }
 }

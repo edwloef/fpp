@@ -8,7 +8,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class TcpClient extends Thread {
-    private static final Logger logger = LogManager.getLogManager().getLogger("TcpClient");
+    private static final Logger logger = LogManager.getLogManager().getLogger(TcpClient.class.getName());
     private final String hostname;
     private final int port;
     private final TcpStreamAction action;
@@ -26,7 +26,7 @@ public class TcpClient extends Thread {
 
             new TcpStream(socket, this.action).start();
         } catch (IOException e) {
-            TcpClient.logger.log(Level.SEVERE, e.toString());
+            TcpClient.logger.log(Level.SEVERE, e.toString(), e);
         }
     }
 }
