@@ -13,7 +13,7 @@ public class ChompSpielfeld extends Spielfeld {
     public void draw() {
         System.out.print(Spielfeld.ANSI_CLEAR);
 
-        int len = ("" + this.getYSize()).length() + 1;
+        int len = ("" + this.getMaxYInColumn(0)).length() + 1;
 
         String full = "▒".repeat(len);
         String empty = " ".repeat(len);
