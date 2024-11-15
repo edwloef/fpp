@@ -203,16 +203,39 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
     }
 
     /**
-     * Gibt zurück, ob der Gegner mit dem nachsten Zug gewinnt.
+     * Gibt zurück, ob der Gegner mit dem nachsten Zug gewinnt oder eine Zwickmühle erzeugt.
      */
     private boolean checkGefahr(int x, int y, Spieler spieler) {
-        Spieler spielergegen;
+        Spieler gegner;
         if (spieler.equals(super.spieler[1])) {
-            spielergegen = super.spieler[0];
+            gegner = super.spieler[0];
         } else {
-            spielergegen = super.spieler[1];
+            gegner = super.spieler[1];
         }
-        return !this.pruefeWeiterspielen(x, y, spielergegen);
+
+        super.spielfeld.setSpielstein(new Spielstein(gegner.getToken(), x, y));
+
+        int counter = 0;
+        for (int y1 = 0; y1 < super.spielfeld.getYSize(); y1++) {
+            int x1 = this.getZeile(y1);
+            if (x1 < 0) {
+                continue;
+            }
+
+            super.spielfeld.setSpielstein(
+                new Spielstein(gegner.getToken(), x1, y1)
+            );
+
+            if (!this.pruefeWeiterspielen(x, y, gegner)) {
+                counter++;
+            }
+
+            super.spielfeld.removeSpielstein(x1, y1);
+        }
+
+        super.spielfeld.removeSpielstein(x, y);
+
+        return counter >= 2 || !this.pruefeWeiterspielen(x, y, gegner);
     }
 
     /**
