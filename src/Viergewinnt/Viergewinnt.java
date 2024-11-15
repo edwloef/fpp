@@ -263,7 +263,7 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
             }
 
             // vom Computer belegte Felder werden zehnfach von leeren Feldern gewichtet
-            val += val + counterFree + counterSame * 10;
+            val += counterFree + counterSame * 10;
         }
 
         return val;
