@@ -11,38 +11,35 @@ public class Main {
     private static final String ANSI_RESET = "\033[0m"; // reset output color
 
     public static void main(String[] args) {
-        System.out.print(
-            "Gib ein, welches Spiel du spielen möchtest: 1 ist Viergewinnt, 2 ist Chomp: "
-        );
         Scanner sc = new Scanner(System.in);
 
         int welchesSpiel;
         while (true) {
             try {
+                System.out.print(
+                    "Gib ein, welches Spiel du spielen möchtest: 1 ist Viergewinnt, 2 ist Chomp: "
+                );
                 welchesSpiel = sc.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("keine Zahl");
-                sc.next();
                 continue;
             }
             if (welchesSpiel != 1 && welchesSpiel != 2) {
                 System.out.println("kein valides Spiel");
-                sc.next();
                 continue;
             }
             break;
         }
 
-        System.out.print(
-            "Gib 1 ein, falls du gegen einen Computer spielen willst, sonst gib eine andere Zahl ein: "
-        );
         int computerGegner;
         while (true) {
             try {
+                System.out.print(
+                    "Gib 1 ein, falls du gegen einen Computer spielen willst, sonst gib eine andere Zahl ein: "
+                );
                 computerGegner = sc.nextInt();
             } catch (InputMismatchException e) {
                 System.out.println("keine Zahl");
-                sc.next();
                 continue;
             }
             break;
@@ -79,7 +76,5 @@ public class Main {
         }
 
         while (spiel.durchgang()) {}
-
-        sc.close();
     }
 }
