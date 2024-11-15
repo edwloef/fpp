@@ -140,23 +140,41 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
         int move_x = 0;
         int move_y = 0;
         int max_val = 0;
+
+        boolean win = false;
         for (int y = 0; y < super.spielfeld.getYSize(); y++) {
             int x = this.getZeile(y);
             if (x < 0) {
                 continue;
             }
 
-            if (this.checkGefahr(x, y, spieler)) {
+            if (!this.pruefeWeiterspielen(x, y, spieler)) {
+                win = true;
                 move_x = x;
                 move_y = y;
                 break;
-            } else {
-                int val = this.computer(x, y, spieler);
+            }
+        }
 
-                if (val > max_val) {
-                    max_val = val;
+        if (!win) {
+            for (int y = 0; y < super.spielfeld.getYSize(); y++) {
+                int x = this.getZeile(y);
+                if (x < 0) {
+                    continue;
+                }
+
+                if (this.checkGefahr(x, y, spieler)) {
                     move_x = x;
                     move_y = y;
+                    break;
+                } else {
+                    int val = this.computer(x, y, spieler);
+
+                    if (val > max_val) {
+                        max_val = val;
+                        move_x = x;
+                        move_y = y;
+                    }
                 }
             }
         }
