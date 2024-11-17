@@ -1,6 +1,6 @@
-package viergewinnt;
+package spiele.viergewinnt;
 
-import common.*;
+import spiele.common.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

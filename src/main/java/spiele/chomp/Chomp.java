@@ -1,6 +1,6 @@
-package chomp;
+package spiele.chomp;
 
-import common.*;
+import spiele.common.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

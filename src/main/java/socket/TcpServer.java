@@ -4,34 +4,54 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class TcpServer extends Thread {
+public class TcpServer {
     private static final Logger logger = LogManager.getLogManager().getLogger(TcpServer.class.getName());
     private final int port;
-    private final TcpStreamAction action;
+    private final ArrayList<TcpStream> clients;
+    private TcpServerAction action;
 
-    public TcpServer(int port, TcpStreamAction action) {
+    public TcpServer(int port, TcpServerAction action) {
         this.port = port;
+        this.clients = new ArrayList<>();
+    }
+
+    public void setAction(TcpServerAction action) {
         this.action = action;
     }
 
-    @Override
     public void run() {
+        if (this.action == null) {
+            TcpServer.logger.log(Level.WARNING, "Tried to run server without setting action");
+            return;
+        }
+
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             TcpServer.logger.log(Level.INFO, "Server " + InetAddress.getLocalHost() + " listening on port " + this.port);
 
-            while (this.isAlive()) {
-                Socket socket = serverSocket.accept();
+            while (true) {
+                try(Socket socket = serverSocket.accept()) {
+                    TcpServer.logger.log(Level.INFO, "New client connected at " + socket.getInetAddress());
 
-                TcpServer.logger.log(Level.INFO, "New client connected at " + socket.getInetAddress());
-
-                new TcpStream(socket, this.action).start();
+                    TcpStream client = new TcpStream(socket, this.action);
+                    this.clients.add(client);
+                    client.start();
+                } catch (IOException e) {
+                    TcpServer.logger.log(Level.SEVERE, e.toString(), e);
+                }
             }
         } catch (IOException e) {
             TcpServer.logger.log(Level.SEVERE, e.toString(), e);
+        }
+    }
+
+    public void broadcast(String msg) throws IOException {
+        for (TcpStream client: this.clients) {
+            client.notify(msg);
         }
     }
 }

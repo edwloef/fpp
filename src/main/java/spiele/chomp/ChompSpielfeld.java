@@ -1,7 +1,7 @@
-package chomp;
+package spiele.chomp;
 
-import common.Spielfeld;
-import common.Spielstein;
+import spiele.common.Spielfeld;
+import spiele.common.Spielstein;
 
 public class ChompSpielfeld extends Spielfeld {
 

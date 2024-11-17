@@ -1,4 +1,4 @@
-package common;
+package spiele.common;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

@@ -1,7 +1,7 @@
-package viergewinnt;
+package spiele.viergewinnt;
 
-import common.Spielfeld;
-import common.Spielstein;
+import spiele.common.Spielfeld;
+import spiele.common.Spielstein;
 
 public class ViergewinntSpielfeld extends Spielfeld {
 

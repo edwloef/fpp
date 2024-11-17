@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class TcpClient extends Thread {
+public class TcpClient {
     private static final Logger logger = LogManager.getLogManager().getLogger(TcpClient.class.getName());
     private final String hostname;
     private final int port;
@@ -19,14 +19,10 @@ public class TcpClient extends Thread {
         this.action = action;
     }
 
-    @Override
-    public void run() {
-        try (Socket socket = new Socket(this.hostname, this.port)) {
-            TcpClient.logger.log(Level.INFO, "Client " + InetAddress.getLocalHost() + " connected to " + this.hostname + " on port " + this.port);
+    public void run() throws IOException {
+        Socket socket = new Socket(this.hostname, this.port);
+        TcpClient.logger.log(Level.INFO, "Client " + InetAddress.getLocalHost() + " connected to " + this.hostname + " on port " + this.port);
 
-            new TcpStream(socket, this.action).start();
-        } catch (IOException e) {
-            TcpClient.logger.log(Level.SEVERE, e.toString(), e);
-        }
+        new TcpStream(socket, this.action).start();
     }
 }

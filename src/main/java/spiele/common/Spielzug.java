@@ -1,4 +1,4 @@
-package common;
+package spiele.common;
 
 public class Spielzug {
 

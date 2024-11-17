@@ -1,8 +1,8 @@
-import chomp.Chomp;
-import common.Spiel;
-import common.Spieler;
-import common.Spielerart;
-import viergewinnt.Viergewinnt;
+import spiele.chomp.Chomp;
+import spiele.common.Spiel;
+import spiele.common.Spieler;
+import spiele.common.Spielerart;
+import spiele.viergewinnt.Viergewinnt;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
