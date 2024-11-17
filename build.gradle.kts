@@ -7,7 +7,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.sun.mail:javax.mail:1.6.2")
 }
 
 application {
