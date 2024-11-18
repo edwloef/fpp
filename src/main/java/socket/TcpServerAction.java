@@ -1,9 +1,13 @@
 package socket;
 
-public abstract class TcpServerAction implements TcpStreamAction {
-    protected final TcpServer server;
+import java.io.IOException;
 
-    protected TcpServerAction(TcpServer server) {
+public abstract class TcpServerAction<T> implements TcpStreamAction {
+    protected final TcpServer<T> server;
+
+    protected TcpServerAction(TcpServer<T> server) {
         this.server = server;
     }
+
+    public abstract void clientDisconnect() throws IOException;
 }

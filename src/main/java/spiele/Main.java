@@ -1,3 +1,5 @@
+package spiele;
+
 import spiele.chomp.Chomp;
 import spiele.common.Spiel;
 import spiele.common.Spieler;

@@ -9,19 +9,24 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class TcpServer {
+public class TcpServer<T> {
     private static final Logger logger = LogManager.getLogManager().getLogger(TcpServer.class.getName());
     private final int port;
     private final ArrayList<TcpStream> clients;
-    private TcpServerAction action;
+    public T sharedState;
+    private TcpServerAction<T> action;
 
-    public TcpServer(int port, TcpServerAction action) {
+    public TcpServer(int port) {
         this.port = port;
         this.clients = new ArrayList<>();
     }
 
-    public void setAction(TcpServerAction action) {
+    public void setAction(TcpServerAction<T> action) {
         this.action = action;
+    }
+
+    public void setSharedState(T sharedState) {
+        this.sharedState = sharedState;
     }
 
     public void run() {
@@ -34,7 +39,7 @@ public class TcpServer {
             TcpServer.logger.log(Level.INFO, "Server " + InetAddress.getLocalHost() + " listening on port " + this.port);
 
             while (true) {
-                try(Socket socket = serverSocket.accept()) {
+                try (Socket socket = serverSocket.accept()) {
                     TcpServer.logger.log(Level.INFO, "New client connected at " + socket.getInetAddress());
 
                     TcpStream client = new TcpStream(socket, this.action);
@@ -50,7 +55,18 @@ public class TcpServer {
     }
 
     public void broadcast(String msg) throws IOException {
-        for (TcpStream client: this.clients) {
+        ArrayList<TcpStream> clients = new ArrayList<>();
+
+        for (TcpStream client : this.clients) {
+            if (client.isAlive()) {
+                clients.add(client);
+            }
+        }
+
+        this.clients.clear();
+        this.clients.addAll(clients);
+
+        for (TcpStream client : this.clients) {
             client.notify(msg);
         }
     }

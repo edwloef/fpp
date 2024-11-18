@@ -19,10 +19,10 @@ public class TcpClient {
         this.action = action;
     }
 
-    public void run() throws IOException {
+    public TcpStream setup() throws IOException {
         Socket socket = new Socket(this.hostname, this.port);
         TcpClient.logger.log(Level.INFO, "Client " + InetAddress.getLocalHost() + " connected to " + this.hostname + " on port " + this.port);
 
-        new TcpStream(socket, this.action).start();
+        return new TcpStream(socket, this.action);
     }
 }

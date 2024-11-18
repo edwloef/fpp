@@ -11,7 +11,7 @@ dependencies {
 }
 
 application {
-    mainClass = "Main"
+    mainClass = "spiele.Main"
 }
 
 tasks.getByName("run", JavaExec::class) {
