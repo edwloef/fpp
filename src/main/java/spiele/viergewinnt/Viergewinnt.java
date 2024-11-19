@@ -261,13 +261,13 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                     // falls das Feld vom Computer belegt ist
                     counterSame++;
                 } else if (
-                           !super.spielfeld.prüfeBelegt((x + a * i), (y + b * i))
+                    !super.spielfeld.prüfeBelegt((x + a * i), (y + b * i))
                 ) {
                     if (
                         !((x + a * i) < 0 ||
-                              (y + b * i) < 0 ||
-                              (x + a * i) >= spielfeld.getXSize() ||
-                              (y + b * i) >= spielfeld.getYSize())
+                            (y + b * i) < 0 ||
+                            (x + a * i) >= spielfeld.getXSize() ||
+                            (y + b * i) >= spielfeld.getYSize())
                     ) {
                         // falls das Feld innerhalb des Spielfeldes liegt und unbelegt ist
                         counterFree++;
@@ -288,13 +288,13 @@ public class Viergewinnt extends Spiel implements Protokollierbar {
                     // falls das Feld vom Computer belegt ist
                     counterSame++;
                 } else if (
-                           !super.spielfeld.prüfeBelegt((x + a * i), (y + b * i))
+                    !super.spielfeld.prüfeBelegt((x + a * i), (y + b * i))
                 ) {
                     if (
                         !((x + a * i) < 0 ||
-                              (y + b * i) < 0 ||
-                              (x + a * i) >= spielfeld.getXSize() ||
-                              (y + b * i) >= spielfeld.getYSize())
+                            (y + b * i) < 0 ||
+                            (x + a * i) >= spielfeld.getXSize() ||
+                            (y + b * i) >= spielfeld.getYSize())
                     ) {
                         // falls das Feld innerhalb des Spielfeldes liegt und unbelegt ist
                         counterFree++;
