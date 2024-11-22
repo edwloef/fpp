@@ -16,15 +16,15 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class ChatServerStream extends TcpServerAction<ChatServerState> {
-    private static final Logger logger = LogManager.getLogManager().getLogger(ChatServerStream.class.getName());
+public class ChatServerAction extends TcpServerAction<ChatServerState> {
+    private static final Logger logger = LogManager.getLogManager().getLogger(ChatServerAction.class.getName());
     private String email;
 
-    public ChatServerStream(TcpServer<ChatServerState> server) {
+    public ChatServerAction(TcpServer<ChatServerState> server) {
         super(server);
 
         if (super.server.sharedState == null) {
-            ChatServerStream.logger.log(Level.WARNING, "chat server initialized with empty shared state");
+            ChatServerAction.logger.log(Level.WARNING, "chat server initialized with empty shared state");
         }
     }
 
@@ -42,10 +42,10 @@ public class ChatServerStream extends TcpServerAction<ChatServerState> {
     }
 
     @Override
-    public String processInput(String msg) throws IOException {
-        ChatServerStream.logger.log(Level.INFO, msg);
+    public String processInput(String input) throws IOException {
+        ChatServerAction.logger.log(Level.INFO, input);
 
-        String[] split = msg.split(" ");
+        String[] split = input.split(" ");
 
         switch (split[0]) {
             case "reg" -> {
@@ -111,8 +111,7 @@ public class ChatServerStream extends TcpServerAction<ChatServerState> {
 
                 super.server.broadcast("msg " + username + " " + split[1]);
             }
-            case "err" -> ChatServerStream.logger.log(Level.WARNING, msg);
-            default -> ChatServerStream.logger.log(Level.WARNING, "unknown message received: \"" + msg + "\"");
+            default -> ChatServerAction.logger.log(Level.WARNING, "unknown message received: \"" + input + "\"");
         }
 
         return "";
@@ -126,7 +125,7 @@ public class ChatServerStream extends TcpServerAction<ChatServerState> {
     }
 
     private String sendRegistrationEmail(String email, ChatServerState sharedState) {
-        String password = ChatServerStream.generateRandomPassword();
+        String password = ChatServerAction.generateRandomPassword();
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.uni-jena.de");
@@ -155,7 +154,7 @@ public class ChatServerStream extends TcpServerAction<ChatServerState> {
 
             Transport.send(mimeMessage);
         } catch (MessagingException e) {
-            ChatServerStream.logger.log(Level.WARNING, e.toString(), e);
+            ChatServerAction.logger.log(Level.WARNING, e.toString(), e);
             return null;
         }
 
