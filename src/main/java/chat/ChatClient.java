@@ -1,25 +1,25 @@
 package chat;
 
+import socket.SocketHandlerThread;
 import socket.TcpClient;
-import socket.TcpStream;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class ChatClient {
 
-    private static final Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        ChatClientAction action = new ChatClientAction();
+        ChatClientThreadAction action = new ChatClientThreadAction();
 
         TcpClient client = new TcpClient("localhost", 9876, action);
         try {
-            TcpStream stream = client.setup();
+            SocketHandlerThread stream = client.setup();
+
+            System.out.println("starting client...");
 
             stream.start();
 
-            System.out.println("starting client");
-
+            Scanner sc = new Scanner(System.in);
             while (true) {
                 stream.notify(sc.nextLine());
             }

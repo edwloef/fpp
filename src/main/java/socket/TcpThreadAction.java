@@ -2,6 +2,6 @@ package socket;
 
 import java.io.IOException;
 
-public interface TcpStreamAction {
+public interface TcpThreadAction {
     String processInput(String input) throws IOException;
 }

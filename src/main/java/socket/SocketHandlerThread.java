@@ -2,15 +2,14 @@ package socket;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
 
-public class TcpStream extends Thread {
+public class SocketHandlerThread extends Thread {
     private final Socket socket;
-    private final TcpStreamAction action;
+    private final TcpThreadAction action;
     private final BufferedReader input;
     private final BufferedWriter output;
 
-    public TcpStream(Socket socket, TcpStreamAction action) throws IOException {
+    public SocketHandlerThread(Socket socket, TcpThreadAction action) throws IOException {
         this.socket = socket;
         this.action = action;
 
@@ -24,11 +23,8 @@ public class TcpStream extends Thread {
             String msg;
 
             while ((msg = this.input.readLine()) != null) {
-                System.out.println(msg);
-
                 this.notify(this.action.processInput(msg));
             }
-        } catch (SocketException e) {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +32,7 @@ public class TcpStream extends Thread {
         System.out.println("closing connection...");
 
         try {
-            if (this.action instanceof TcpServerAction<?> serverAction) {
+            if (this.action instanceof TcpServerThreadAction<?> serverAction) {
                 serverAction.clientDisconnect();
             }
 

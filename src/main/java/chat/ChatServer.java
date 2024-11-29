@@ -10,7 +10,7 @@ public class ChatServer {
 
         TcpServer<ChatServerState> server = new TcpServer<>(9876);
 
-        ChatServerAction action = new ChatServerAction(server);
+        ChatServerThreadAction action = new ChatServerThreadAction(server);
         server.setAction(action);
 
         Scanner sc = new Scanner(System.in);
@@ -26,6 +26,8 @@ public class ChatServer {
 
         ChatServerState state = new ChatServerState(new HashMap<>(), new HashMap<>(), email, username, password);
         server.setSharedState(state);
+
+        System.out.println("starting server...");
 
         server.run();
     }

@@ -1,7 +1,7 @@
 package chat;
 
 import socket.TcpServer;
-import socket.TcpServerAction;
+import socket.TcpServerThreadAction;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -13,10 +13,10 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Properties;
 
-public class ChatServerAction extends TcpServerAction<ChatServerState> {
+public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerState> {
     private String email;
 
-    public ChatServerAction(TcpServer<ChatServerState> server) {
+    public ChatServerThreadAction(TcpServer<ChatServerState> server) {
         super(server);
     }
 
@@ -120,12 +120,12 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
     }
 
     @Override
-    public TcpServerAction<ChatServerState> clone() {
-        return new ChatServerAction(super.server);
+    public TcpServerThreadAction<ChatServerState> clone() {
+        return new ChatServerThreadAction(super.server);
     }
 
     private String sendRegistrationEmail(String email, ChatServerState sharedState) {
-        String password = ChatServerAction.generateRandomPassword();
+        String password = ChatServerThreadAction.generateRandomPassword();
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.uni-jena.de");

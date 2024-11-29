@@ -6,16 +6,16 @@ import java.net.Socket;
 public class TcpClient {
     private final String hostname;
     private final int port;
-    private final TcpStreamAction action;
+    private final TcpThreadAction action;
 
-    public TcpClient(String hostname, int port, TcpStreamAction action) {
+    public TcpClient(String hostname, int port, TcpThreadAction action) {
         this.hostname = hostname;
         this.port = port;
         this.action = action;
     }
 
-    public TcpStream setup() throws IOException {
+    public SocketHandlerThread setup() throws IOException {
         Socket socket = new Socket(this.hostname, this.port);
-        return new TcpStream(socket, this.action);
+        return new SocketHandlerThread(socket, this.action);
     }
 }
