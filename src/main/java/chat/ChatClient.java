@@ -4,7 +4,6 @@ import socket.TcpClient;
 import socket.TcpStream;
 
 import java.io.IOException;
-
 import java.util.Scanner;
 
 public class ChatClient {
@@ -19,8 +18,10 @@ public class ChatClient {
 
             stream.start();
 
+            System.out.println("starting client");
+
             while (true) {
-                stream.notify(sc.next());
+                stream.notify(sc.nextLine());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -1,48 +1,58 @@
 package socket;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.net.SocketException;
 
 public class TcpStream extends Thread {
     private final Socket socket;
     private final TcpStreamAction action;
-    private final Scanner input;
-    private final OutputStream output;
+    private final BufferedReader input;
+    private final BufferedWriter output;
 
     public TcpStream(Socket socket, TcpStreamAction action) throws IOException {
         this.socket = socket;
         this.action = action;
 
-        this.input = new Scanner(this.socket.getInputStream());
-        this.output = this.socket.getOutputStream();
+        this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        this.output = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
     }
 
     @Override
     public void run() {
-        while (this.isAlive()) {
-            try {
-                this.notify(this.action.processInput(this.input.nextLine()));
-            } catch (IOException e) {
-            } catch (NoSuchElementException e) {
-                try {
-                    if (this.action instanceof TcpServerAction<?> serverAction) {
-                        serverAction.clientDisconnect();
-                    }
+        try {
+            String msg;
 
-                    this.socket.close();
+            while ((msg = this.input.readLine()) != null) {
+                System.out.println(msg);
 
-                    break;
-                } catch (IOException e1) {
-                }
+                this.notify(this.action.processInput(msg));
             }
+        } catch (SocketException e) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("closing connection...");
+
+        try {
+            if (this.action instanceof TcpServerAction<?> serverAction) {
+                serverAction.clientDisconnect();
+            }
+
+            this.socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
+    public boolean isClosed() {
+        return this.socket.isClosed();
+    }
+
     public void notify(String msg) throws IOException {
-        this.output.write((msg + "\n").getBytes(StandardCharsets.UTF_8));
+        this.output.write(msg);
+        this.output.newLine();
+        this.output.flush();
     }
 }

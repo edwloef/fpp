@@ -33,10 +33,10 @@ public class TcpServer<T> {
             while (true) {
                 try (Socket socket = serverSocket.accept()) {
                     TcpStream client = new TcpStream(socket, this.action.clone());
+                    client.start();
                     synchronized (this.clients) {
                         this.clients.add(client);
                     }
-                    client.start();
                 } catch (IOException e) {
                 }
             }
@@ -49,7 +49,7 @@ public class TcpServer<T> {
 
         synchronized (this.clients) {
             for (TcpStream client : this.clients) {
-                if (client.isAlive()) {
+                if (!client.isClosed()) {
                     clients.add(client);
                 }
             }
