@@ -11,7 +11,34 @@ public class ChatClientAction implements TcpStreamAction {
         String[] split = input.split(" ");
 
         switch (split[0]) {
-            case "suc", "err" -> {
+            case "suc" -> {
+                switch (split[1]) {
+                    case "reg" -> {
+                        System.out.println("Registrierung erfolgreich.");
+                    }
+                    case "an" -> {
+                        System.out.println("Anmeldung erfolgreich.");
+                    }
+                    case "chpwd" ->{
+                        System.err.println("Passwortänderung erfolgreich.");
+                    }
+                    default -> {}
+                }
+            }
+            case "err" -> {
+                switch (split[1]) {
+                    case "reg" -> {
+                        System.out.println("Ihre Eingaben für die Registrierung sind ungültig. Bitte versuchen sie es erneut.");
+                    }
+                    case "an" -> {
+                        System.out.println("Ihre Eingaben für die Anmeldung sind ungültig. Bitte versuchen sie es erneut.");
+                    }
+                    case "chpwd" ->{
+                        System.err.println("Ihre Eingaben für die Passwortänderung sind ungültig. Bitte versuchen sie es erneut");
+                    }
+                    default -> {}
+                        
+                }
             }
             case "con" -> {
                 String username = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
