@@ -10,4 +10,6 @@ public abstract class TcpServerAction<T> implements TcpStreamAction {
     }
 
     public abstract void clientDisconnect() throws IOException;
+
+    public abstract TcpServerAction<T> clone();
 }

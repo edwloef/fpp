@@ -32,7 +32,7 @@ public class TcpServer<T> {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 try (Socket socket = serverSocket.accept()) {
-                    TcpStream client = new TcpStream(socket, this.action);
+                    TcpStream client = new TcpStream(socket, this.action.clone());
                     this.clients.add(client);
                     client.start();
                 } catch (IOException e) {

@@ -97,9 +97,11 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
                 return "suc chpwd";
             }
             case "msg" -> {
-                String username = super.server.sharedState.usernames().get(this.email);
+                if (this.email != null) {
+                    String username = super.server.sharedState.usernames().get(this.email);
 
-                super.server.broadcast("msg " + username + " " + split[1]);
+                    super.server.broadcast("msg " + username + " " + split[1]);
+                }
             }
             default -> {}
         }
@@ -112,6 +114,11 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
         String username = super.server.sharedState.usernames().get(this.email);
 
         super.server.broadcast("dis " + username);
+    }
+
+    @Override
+    public TcpServerAction<ChatServerState> clone() {
+        return new ChatServerAction(super.server);
     }
 
     private String sendRegistrationEmail(String email, ChatServerState sharedState) {
