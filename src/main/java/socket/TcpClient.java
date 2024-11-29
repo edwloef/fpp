@@ -1,11 +1,7 @@
 package socket;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class TcpClient {
     private final String hostname;

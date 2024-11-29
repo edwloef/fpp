@@ -4,9 +4,6 @@ import socket.TcpStreamAction;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class ChatClientAction implements TcpStreamAction {
     @Override
@@ -14,7 +11,8 @@ public class ChatClientAction implements TcpStreamAction {
         String[] split = input.split(" ");
 
         switch (split[0]) {
-            case "suc", "err" -> {}
+            case "suc", "err" -> {
+            }
             case "con" -> {
                 String username = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
 
@@ -31,7 +29,8 @@ public class ChatClientAction implements TcpStreamAction {
 
                 System.out.println("User " + username + " says \"" + message + "\"");
             }
-            default -> {}
+            default -> {
+            }
         }
 
         return "";

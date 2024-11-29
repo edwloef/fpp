@@ -103,7 +103,8 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
                     super.server.broadcast("msg " + username + " " + split[1]);
                 }
             }
-            default -> {}
+            default -> {
+            }
         }
 
         return "";
