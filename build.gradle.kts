@@ -11,7 +11,7 @@ dependencies {
 }
 
 application {
-    mainClass = "spiele.Main"
+    mainClass = "chat.ChatServer"
 }
 
 tasks.getByName("run", JavaExec::class) {

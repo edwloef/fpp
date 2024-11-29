@@ -11,7 +11,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class TcpStream extends Thread {
-    private static final Logger logger = LogManager.getLogManager().getLogger(TcpStream.class.getName());
     private final Socket socket;
     private final TcpStreamAction action;
     private final Scanner input;
@@ -31,7 +30,6 @@ public class TcpStream extends Thread {
             try {
                 this.notify(this.action.processInput(this.input.nextLine()));
             } catch (IOException e) {
-                TcpStream.logger.log(Level.SEVERE, e.toString(), e);
             } catch (NoSuchElementException e) {
                 try {
                     if (this.action instanceof TcpServerAction<?> serverAction) {
@@ -42,7 +40,6 @@ public class TcpStream extends Thread {
 
                     break;
                 } catch (IOException e1) {
-                    TcpStream.logger.log(Level.SEVERE, e1.toString(), e1);
                 }
             }
         }

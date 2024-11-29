@@ -12,20 +12,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class ChatServerAction extends TcpServerAction<ChatServerState> {
-    private static final Logger logger = LogManager.getLogManager().getLogger(ChatServerAction.class.getName());
     private String email;
 
     public ChatServerAction(TcpServer<ChatServerState> server) {
         super(server);
-
-        if (super.server.sharedState == null) {
-            ChatServerAction.logger.log(Level.WARNING, "chat server initialized with empty shared state");
-        }
     }
 
     private static String generateRandomPassword() {
@@ -42,9 +34,7 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
     }
 
     @Override
-    public String processInput(String input) throws IOException {
-        ChatServerAction.logger.log(Level.INFO, input);
-
+    public synchronized String processInput(String input) throws IOException {
         String[] split = input.split(" ");
 
         switch (split[0]) {
@@ -111,7 +101,7 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
 
                 super.server.broadcast("msg " + username + " " + split[1]);
             }
-            default -> ChatServerAction.logger.log(Level.WARNING, "unknown message received: \"" + input + "\"");
+            default -> {}
         }
 
         return "";
@@ -154,7 +144,6 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
 
             Transport.send(mimeMessage);
         } catch (MessagingException e) {
-            ChatServerAction.logger.log(Level.WARNING, e.toString(), e);
             return null;
         }
 

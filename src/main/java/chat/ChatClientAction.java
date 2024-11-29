@@ -9,15 +9,12 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class ChatClientAction implements TcpStreamAction {
-    private static final Logger logger = LogManager.getLogManager().getLogger(ChatClientAction.class.getName());
-
     @Override
     public String processInput(String input) {
         String[] split = input.split(" ");
 
         switch (split[0]) {
-            case "suc" -> ChatClientAction.logger.log(Level.FINE, input);
-            case "err" -> ChatClientAction.logger.log(Level.WARNING, input);
+            case "suc", "err" -> {}
             case "con" -> {
                 String username = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
 
@@ -34,7 +31,7 @@ public class ChatClientAction implements TcpStreamAction {
 
                 System.out.println("User " + username + " says \"" + message + "\"");
             }
-            default -> ChatClientAction.logger.log(Level.WARNING, "unknown message received: \"" + input + "\"");
+            default -> {}
         }
 
         return "";

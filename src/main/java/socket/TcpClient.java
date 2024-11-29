@@ -8,7 +8,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class TcpClient {
-    private static final Logger logger = LogManager.getLogManager().getLogger(TcpClient.class.getName());
     private final String hostname;
     private final int port;
     private final TcpStreamAction action;
@@ -21,8 +20,6 @@ public class TcpClient {
 
     public TcpStream setup() throws IOException {
         Socket socket = new Socket(this.hostname, this.port);
-        TcpClient.logger.log(Level.INFO, "Client " + InetAddress.getLocalHost() + " connected to " + this.hostname + " on port " + this.port);
-
         return new TcpStream(socket, this.action);
     }
 }
