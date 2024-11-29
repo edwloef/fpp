@@ -11,7 +11,16 @@ dependencies {
 }
 
 application {
-    mainClass = "chat.ChatServer"
+    if (hasProperty("launch")) {
+        when ("${property("launch")}") {
+            "chatServer" -> {
+                mainClass.set("chat.ChatServer")
+            }
+            "chatClient" -> {
+                mainClass.set("chat.ChatClient")
+            }
+        }
+    }
 }
 
 tasks.getByName("run", JavaExec::class) {
