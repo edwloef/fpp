@@ -34,7 +34,7 @@ public class ChatServerAction extends TcpServerAction<ChatServerState> {
     }
 
     @Override
-    public synchronized String processInput(String input) throws IOException {
+    public String processInput(String input) throws IOException {
         String[] split = input.split(" ");
 
         switch (split[0]) {

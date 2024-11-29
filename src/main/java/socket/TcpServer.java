@@ -33,7 +33,9 @@ public class TcpServer<T> {
             while (true) {
                 try (Socket socket = serverSocket.accept()) {
                     TcpStream client = new TcpStream(socket, this.action.clone());
-                    this.clients.add(client);
+                    synchronized (this.clients) {
+                        this.clients.add(client);
+                    }
                     client.start();
                 } catch (IOException e) {
                 }
@@ -45,17 +47,20 @@ public class TcpServer<T> {
     public void broadcast(String msg) throws IOException {
         ArrayList<TcpStream> clients = new ArrayList<>();
 
-        for (TcpStream client : this.clients) {
-            if (client.isAlive()) {
-                clients.add(client);
+        synchronized (this.clients) {
+            for (TcpStream client : this.clients) {
+                if (client.isAlive()) {
+                    clients.add(client);
+                }
+            }
+
+            this.clients.clear();
+            this.clients.addAll(clients);
+
+            for (TcpStream client : this.clients) {
+                client.notify(msg);
             }
         }
 
-        this.clients.clear();
-        this.clients.addAll(clients);
-
-        for (TcpStream client : this.clients) {
-            client.notify(msg);
-        }
     }
 }

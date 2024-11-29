@@ -13,17 +13,14 @@ public class ChatClient {
     public static void main(String[] args) {
         ChatClientAction action = new ChatClientAction();
 
-        
-
         TcpClient client = new TcpClient("localhost", 9876, action);
         try {
             TcpStream stream = client.setup();
 
             stream.start();
 
-            while(true){
-                String msg = sc.next();
-                stream.notify("msg" + msg);
+            while (true) {
+                stream.notify(sc.next());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
