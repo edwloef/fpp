@@ -25,11 +25,11 @@ public class SocketHandlerThread extends Thread {
             while ((msg = this.input.readLine()) != null) {
                 this.notify(this.action.processInput(msg));
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        System.out.println("closing connection...");
+            System.out.println("closing connection...");
+        } catch (IOException e) {
+            System.out.println("connection closed by peer...");
+        }
 
         try {
             if (this.action instanceof TcpServerThreadAction<?> serverAction) {
