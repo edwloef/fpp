@@ -48,22 +48,28 @@ public class TcpServer<T> {
     }
 
     public void broadcast(String msg) throws IOException {
+        this.gc();
+
+        synchronized (this.clients) {
+            for (SocketHandlerThread client : this.clients) {
+                client.notify(msg);
+            }
+        }
+
+    }
+
+    public void gc() {
         ArrayList<SocketHandlerThread> clients = new ArrayList<>();
 
         synchronized (this.clients) {
             for (SocketHandlerThread client : this.clients) {
-                if (!client.isClosed()) {
+                if (client.isAlive()) {
                     clients.add(client);
                 }
             }
 
             this.clients.clear();
             this.clients.addAll(clients);
-
-            for (SocketHandlerThread client : this.clients) {
-                client.notify(msg);
-            }
         }
-
     }
 }

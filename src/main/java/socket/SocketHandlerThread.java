@@ -42,11 +42,11 @@ public class SocketHandlerThread extends Thread {
         }
     }
 
-    public boolean isClosed() {
-        return this.socket.isClosed();
-    }
-
     public void notify(String msg) throws IOException {
+        if (msg.isEmpty()) {
+            return;
+        }
+
         this.output.write(msg);
         this.output.newLine();
         this.output.flush();

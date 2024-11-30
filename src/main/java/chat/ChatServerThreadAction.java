@@ -14,10 +14,28 @@ import java.util.Date;
 import java.util.Properties;
 
 public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerState> {
+    private final Session emailSession;
     private String email;
 
     public ChatServerThreadAction(TcpServer<ChatServerState> server) {
         super(server);
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "mail.gmx.net");
+        properties.put("mail.smtp.port", 465);
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", true);
+
+        Authenticator authenticator = new Authenticator() {
+            private final PasswordAuthentication passwordAuthentication = new PasswordAuthentication("loeffler.steiner.fpp@gmx.de", server.sharedState.srvPassword());
+
+            @Override
+            public PasswordAuthentication getPasswordAuthentication() {
+                return passwordAuthentication;
+            }
+        };
+
+        this.emailSession = Session.getInstance(properties, authenticator);
     }
 
     private static String generateRandomPassword() {
@@ -48,7 +66,7 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                     return "err reg";
                 }
 
-                String password = this.sendRegistrationEmail(email, super.server.sharedState);
+                String password = this.sendRegistrationEmail(email);
                 if (password == null) {
                     return "err reg";
                 }
@@ -70,17 +88,17 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                     return "err an";
                 }
 
-                super.server.broadcast("con " + username);
+                this.email = email;
+                super.server.sharedState.online().add(this.email);
 
                 StringBuilder returns = new StringBuilder();
-
-                for (String userEmail : super.server.sharedState.passwords().keySet()) {
+                for (String userEmail : super.server.sharedState.online()) {
                     String userUsername = super.server.sharedState.usernames().get(userEmail);
 
                     returns.append("con ").append(userUsername).append('\n');
                 }
 
-                this.email = email;
+                super.server.broadcast("con " + username);
 
                 return returns + "suc an";
             }
@@ -99,11 +117,13 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                 return "suc chpwd";
             }
             case "msg" -> {
-                if (this.email != null) {
-                    String username = super.server.sharedState.usernames().get(this.email);
-
-                    super.server.broadcast("msg " + username + " " + split[1]);
+                if (this.email == null) {
+                    return "";
                 }
+
+                String username = super.server.sharedState.usernames().get(this.email);
+
+                super.server.broadcast("msg " + username + " " + split[1]);
             }
             default -> {
             }
@@ -114,8 +134,9 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
 
     @Override
     public void clientDisconnect() throws IOException {
-        String username = super.server.sharedState.usernames().get(this.email);
+        super.server.sharedState.online().remove(this.email);
 
+        String username = super.server.sharedState.usernames().get(this.email);
         super.server.broadcast("dis " + username);
     }
 
@@ -124,29 +145,12 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
         return new ChatServerThreadAction(super.server);
     }
 
-    private String sendRegistrationEmail(String email, ChatServerState sharedState) {
+    private String sendRegistrationEmail(String email) {
         String password = ChatServerThreadAction.generateRandomPassword();
 
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.uni-jena.de");
-        properties.put("mail.smtp.port", 465);
-        properties.put("mail.smtp.starttls.enable", true);
-        properties.put("mail.smtp.auth", true);
-
-        Authenticator authenticator = new Authenticator() {
-            private final PasswordAuthentication passwordAuthentication = new PasswordAuthentication(sharedState.srvUsername(), sharedState.srvPassword());
-
-            @Override
-            public PasswordAuthentication getPasswordAuthentication() {
-                return passwordAuthentication;
-            }
-        };
-
-        Session session = Session.getInstance(properties, authenticator);
-
-        MimeMessage mimeMessage = new MimeMessage(session);
+        MimeMessage mimeMessage = new MimeMessage(this.emailSession);
         try {
-            mimeMessage.setFrom(new InternetAddress(sharedState.srvEmail()));
+            mimeMessage.setFrom(new InternetAddress("loeffler.steiner.fpp@gmx.de"));
             mimeMessage.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
             mimeMessage.setSubject("FPP Registrierung");
             mimeMessage.setSentDate(new Date());
