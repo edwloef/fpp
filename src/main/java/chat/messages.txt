@@ -18,3 +18,11 @@ chpwd <old_password> <new_password> -> suc chpwd
                                     -> err chpwd
 
 msg <message> -> broadcast "msg <username> <message>"
+
+┌-------------------┐
+| Bitte geben Sie 1 |
+| oder 2 ein:       |
+├-------------------┤
+| 1: Registrierung  |
+| 2: Anmeldung      |
+└-------------------┘
