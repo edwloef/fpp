@@ -4,26 +4,28 @@ import socket.SocketHandlerThread;
 import socket.TcpClient;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ChatClient {
-    private static final Scanner sc = new Scanner(System.in);
-
+public class ChatClient implements Runnable {
     private static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
 
     public static void main(String[] args) {
-        ChatClientThreadAction action = new ChatClientThreadAction();
+        ChatClient client = new ChatClient();
+        client.run();
+    }
 
-        TcpClient client = new TcpClient("localhost", 9876, action);
+    @Override
+    public void run() {
         try {
+            ChatClientThreadAction action = new ChatClientThreadAction();
+            TcpClient client = new TcpClient("localhost", 9876, action);
             SocketHandlerThread thread = client.setup();
 
             System.out.println("starting client...");
-
             thread.start();
+
+            Scanner sc = new Scanner(System.in);
 
             while (!action.isAngemeldet()) {
                 System.out.println("┌------------------┐");
@@ -36,15 +38,16 @@ public class ChatClient {
 
                 while (true) {
                     try {
-                        String in = ChatClient.sc.nextLine();
+                        String in = sc.nextLine().strip();
 
                         if (in.equals("/reg")) {
-                            thread.notify(ChatClient.registrieren());
+                            thread.notify(action.registrieren(sc));
                             System.out.print(ChatClient.ANSI_CLEAR);
                         } else if (in.equals("/an")) {
-                            thread.notify(ChatClient.anmelden());
+                            thread.notify(action.anmelden(sc));
                             System.out.print(ChatClient.ANSI_CLEAR);
                         } else {
+                            System.out.println("falsche Eingabe!");
                             continue;
                         }
 
@@ -56,10 +59,9 @@ public class ChatClient {
                 }
 
                 action.wait = true;
-
                 while (action.wait) {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(1);
                     } catch (InterruptedException e) {
                     }
                 }
@@ -77,16 +79,17 @@ public class ChatClient {
             System.out.println("└--------------------┘");
 
             while (true) {
-                String in = ChatClient.sc.nextLine();
+                String in = sc.nextLine().strip();
 
                 if (in.startsWith("/msg ")) {
-                    thread.notify(ChatClient.nachricht(in.substring(5)));
+                    thread.notify(action.nachricht(in.substring(5)));
                 } else if (in.equals("/pwd")) {
+                    thread.notify(action.passwortÄndern(sc));
+
                     action.wait = true;
-                    thread.notify(ChatClient.passwortÄndern());
                     while (action.wait) {
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(1);
                         } catch (InterruptedException e) {
                         }
                     }
@@ -100,37 +103,6 @@ public class ChatClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static String registrieren() {
-        System.out.print("Bitte geben Sie Ihre E-Mail-Adresse ein: ");
-        String email = URLEncoder.encode(ChatClient.sc.nextLine(), StandardCharsets.UTF_8);
-        System.out.print("Bitte geben Sie Ihren gewünschten Benutzernamen ein: ");
-        String username = URLEncoder.encode(ChatClient.sc.nextLine(), StandardCharsets.UTF_8);
-
-        return "reg " + email + " " + username;
-    }
-
-    private static String anmelden() {
-        System.out.print("Bitte geben Sie Ihre E-Mail-Adresse ein: ");
-        String email = URLEncoder.encode(ChatClient.sc.nextLine(), StandardCharsets.UTF_8);
-        System.out.print("Bitte geben Sie Ihr Passwort ein: ");
-        String password = URLEncoder.encode(ChatClient.sc.nextLine(), StandardCharsets.UTF_8);
-
-        return "an " + email + " " + password;
-    }
-
-    private static String passwortÄndern() {
-        System.out.print("Bitte geben Sie Ihr altes Passwort ein: ");
-        String password = URLEncoder.encode(ChatClient.sc.nextLine(), StandardCharsets.UTF_8);
-        System.out.print("Bitte geben Sie Ihr gewünschtes neues Passwort ein: ");
-        String newPassword = URLEncoder.encode(ChatClient.sc.nextLine(), StandardCharsets.UTF_8);
-
-        return "chpwd " + password + " " + newPassword;
-    }
-
-    private static String nachricht(String msg) {
-        return "msg " + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
 }
     

@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class TcpServer<T> {
+public class TcpServer<T> implements Runnable {
     private final int port;
     private final ArrayList<SocketHandlerThread> clients;
     public T sharedState;
@@ -24,6 +24,7 @@ public class TcpServer<T> {
         this.sharedState = sharedState;
     }
 
+    @Override
     public void run() {
         if (this.action == null) {
             return;

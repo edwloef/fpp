@@ -54,7 +54,7 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
 
     @Override
     public String processInput(String input) throws IOException {
-        System.out.println(input);
+        System.out.println("> " + input);
 
         String[] split = input.split(" ");
 
@@ -62,8 +62,6 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
             case "reg" -> {
                 String email = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
                 String username = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
-
-                System.out.println(email);
 
                 if (super.server.sharedState.usernames().containsKey(email)) {
                     return "err reg";
@@ -82,6 +80,11 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
             }
             case "an" -> {
                 String email = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
+
+                if (super.server.sharedState.online().contains(email)) {
+                    return "err an";
+                }
+
                 String password = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
 
                 String correctPassword = super.server.sharedState.passwords().get(email);
@@ -97,13 +100,13 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                 for (String userEmail : super.server.sharedState.online()) {
                     String userUsername = URLEncoder.encode(super.server.sharedState.usernames().get(userEmail), StandardCharsets.UTF_8);
 
-                    returns.append("con ").append(userUsername).append('\n');
+                    returns.append("\ncon ").append(userUsername);
                 }
 
                 String username = URLEncoder.encode(super.server.sharedState.usernames().get(email), StandardCharsets.UTF_8);
                 super.server.broadcast("con " + username);
 
-                return returns + "suc an";
+                return "suc an" + returns;
             }
             case "chpwd" -> {
                 String password = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
