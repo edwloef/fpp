@@ -66,7 +66,15 @@ public class ChatClient {
         return "reg " + email + " " + username;
     }
 
-    private static String anmelden() {
-        return "";
+
+    private static string anmelden(){
+        System.out.println("Bitte geben sie Ihren Benutzernamen ein:");
+        String bName = URLEncoder.encode(ChatClient.sc.next(), StandardCharsets.UTF_8);
+        System.out.println("Bitte geben sie ihren Passwort ein:");
+        String pWort = URLEncoder.encode(ChatClient.sc.next(), StandardCharsets.UTF_8);
+
+        return "an" + " " + bName + " " + pWort;
+
     }
 }
+    
