@@ -7,6 +7,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
@@ -59,8 +60,10 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
 
         switch (split[0]) {
             case "reg" -> {
-                String email = split[1];
-                String username = split[2];
+                String email = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
+                String username = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
+
+                System.out.println(email);
 
                 if (super.server.sharedState.usernames().containsKey(email)) {
                     return "err reg";
@@ -78,9 +81,8 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                 return "suc reg";
             }
             case "an" -> {
-                String email = split[1];
-                String password = split[2];
-                String username = super.server.sharedState.usernames().get(email);
+                String email = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
+                String password = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
 
                 String correctPassword = super.server.sharedState.passwords().get(email);
 
@@ -93,18 +95,19 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
 
                 StringBuilder returns = new StringBuilder();
                 for (String userEmail : super.server.sharedState.online()) {
-                    String userUsername = super.server.sharedState.usernames().get(userEmail);
+                    String userUsername = URLEncoder.encode(super.server.sharedState.usernames().get(userEmail), StandardCharsets.UTF_8);
 
                     returns.append("con ").append(userUsername).append('\n');
                 }
 
+                String username = URLEncoder.encode(super.server.sharedState.usernames().get(email), StandardCharsets.UTF_8);
                 super.server.broadcast("con " + username);
 
                 return returns + "suc an";
             }
             case "chpwd" -> {
-                String password = split[1];
-                String newPassword = split[2];
+                String password = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
+                String newPassword = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
 
                 String correctPassword = super.server.sharedState.passwords().get(this.email);
 
@@ -121,7 +124,7 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                     return "";
                 }
 
-                String username = super.server.sharedState.usernames().get(this.email);
+                String username = URLEncoder.encode(super.server.sharedState.usernames().get(this.email), StandardCharsets.UTF_8);
 
                 super.server.broadcast("msg " + username + " " + split[1]);
             }
@@ -136,7 +139,7 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
     public void clientDisconnect() throws IOException {
         super.server.sharedState.online().remove(this.email);
 
-        String username = super.server.sharedState.usernames().get(this.email);
+        String username = URLEncoder.encode(super.server.sharedState.usernames().get(this.email), StandardCharsets.UTF_8);
         super.server.broadcast("dis " + username);
     }
 

@@ -6,7 +6,8 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 public class ChatClientThreadAction implements TcpThreadAction {
-    boolean angemeldet = false;
+    public boolean wait = true;
+    private boolean angemeldet = false;
 
     @Override
     public String processInput(String input) {
@@ -67,6 +68,16 @@ public class ChatClientThreadAction implements TcpThreadAction {
             }
         }
 
+        switch (split[0]) {
+            case "suc", "err" -> this.wait = false;
+            default -> {
+            }
+        }
+
         return "";
+    }
+
+    public boolean isAngemeldet() {
+        return this.angemeldet;
     }
 }
