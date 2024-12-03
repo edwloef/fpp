@@ -58,13 +58,7 @@ public class ChatClient implements Runnable {
                     System.out.println("falsche Eingabe!");
                 }
 
-                action.wait = true;
-                while (action.wait) {
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                    }
-                }
+                action.waitForResponse();
             }
 
             System.out.println("┌--------------------┐");
@@ -85,14 +79,7 @@ public class ChatClient implements Runnable {
                     thread.notify(action.nachricht(in.substring(5)));
                 } else if (in.equals("/pwd")) {
                     thread.notify(action.passwortÄndern(sc));
-
-                    action.wait = true;
-                    while (action.wait) {
-                        try {
-                            Thread.sleep(1);
-                        } catch (InterruptedException e) {
-                        }
-                    }
+                    action.waitForResponse();
                 } else if (in.equals("/ab")) {
                     thread.close();
                     return;

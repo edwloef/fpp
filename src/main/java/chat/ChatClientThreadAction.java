@@ -10,8 +10,8 @@ import java.util.Scanner;
 public class ChatClientThreadAction implements TcpThreadAction {
     private static final String ANSI_CYAN = "\033[36m"; // blue output color
     private static final String ANSI_RESET = "\033[0m"; // reset output color
-    public boolean wait = true;
     private boolean angemeldet = false;
+    private boolean wait;
 
     @Override
     public String processInput(String input) {
@@ -69,10 +69,8 @@ public class ChatClientThreadAction implements TcpThreadAction {
             }
         }
 
-        switch (split[0]) {
-            case "suc", "err" -> this.wait = false;
-            default -> {
-            }
+        if (split[0].equals("suc") || split[0].equals("err")) {
+            this.wait = false;
         }
 
         return "";
@@ -111,5 +109,15 @@ public class ChatClientThreadAction implements TcpThreadAction {
 
     public String nachricht(String msg) {
         return "msg " + URLEncoder.encode(msg, StandardCharsets.UTF_8);
+    }
+
+    public void waitForResponse() {
+        this.wait = true;
+        while (this.wait) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+            }
+        }
     }
 }
