@@ -82,7 +82,7 @@ public class ChatClientThreadAction implements TcpThreadAction {
         this.wait = true;
         while (this.wait) {
             try {
-                Thread.sleep(1);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
             }
         }

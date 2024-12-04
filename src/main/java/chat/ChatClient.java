@@ -93,7 +93,7 @@ public class ChatClient implements Runnable {
         }
     }
 
-    public String registrieren() {
+    private String registrieren() {
         System.out.print("Bitte geben Sie Ihre E-Mail-Adresse ein: ");
         String email = URLEncoder.encode(this.sc.nextLine(), StandardCharsets.UTF_8);
         System.out.print("Bitte geben Sie Ihren gewünschten Benutzernamen ein: ");
@@ -102,7 +102,7 @@ public class ChatClient implements Runnable {
         return "reg " + email + " " + username;
     }
 
-    public String anmelden() {
+    private String anmelden() {
         System.out.print("Bitte geben Sie Ihre E-Mail-Adresse ein: ");
         String email = URLEncoder.encode(this.sc.nextLine(), StandardCharsets.UTF_8);
         System.out.print("Bitte geben Sie Ihr Passwort ein: ");
@@ -111,7 +111,7 @@ public class ChatClient implements Runnable {
         return "an " + email + " " + password;
     }
 
-    public String passwortÄndern() {
+    private String passwortÄndern() {
         System.out.print("Bitte geben Sie Ihr altes Passwort ein: ");
         String password = URLEncoder.encode(this.sc.nextLine(), StandardCharsets.UTF_8);
         System.out.print("Bitte geben Sie Ihr gewünschtes neues Passwort ein: ");
@@ -120,7 +120,7 @@ public class ChatClient implements Runnable {
         return "chpwd " + password + " " + newPassword;
     }
 
-    public String nachricht(String msg) {
+    private String nachricht(String msg) {
         return "msg " + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
 }

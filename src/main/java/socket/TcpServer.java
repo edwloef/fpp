@@ -36,9 +36,7 @@ public class TcpServer<T> implements Runnable {
                     Socket socket = serverSocket.accept();
                     SocketHandlerThread client = new SocketHandlerThread(socket, this.action.clone());
                     client.start();
-                    synchronized (this.clients) {
-                        this.clients.add(client);
-                    }
+                    this.clients.add(client);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -51,26 +49,22 @@ public class TcpServer<T> implements Runnable {
     public void broadcast(String msg) throws IOException {
         this.gc();
 
-        synchronized (this.clients) {
-            for (SocketHandlerThread client : this.clients) {
-                client.notify(msg);
-            }
+        for (SocketHandlerThread client : this.clients) {
+            client.notify(msg);
         }
 
     }
 
-    public void gc() {
+    private void gc() {
         ArrayList<SocketHandlerThread> clients = new ArrayList<>();
 
-        synchronized (this.clients) {
-            for (SocketHandlerThread client : this.clients) {
-                if (client.isAlive()) {
-                    clients.add(client);
-                }
+        for (SocketHandlerThread client : this.clients) {
+            if (client.isAlive()) {
+                clients.add(client);
             }
-
-            this.clients.clear();
-            this.clients.addAll(clients);
         }
+
+        this.clients.clear();
+        this.clients.addAll(clients);
     }
 }
