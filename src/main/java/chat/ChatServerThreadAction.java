@@ -39,19 +39,6 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
         this.emailSession = Session.getInstance(properties, authenticator);
     }
 
-    private static String generateRandomPassword() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-        SecureRandom random = new SecureRandom();
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 0; i < 10; i++) {
-            password.append(chars.charAt(random.nextInt(chars.length())));
-        }
-
-        return password.toString();
-    }
-
     @Override
     public String processInput(String input) throws IOException {
         System.out.println("> " + input);
@@ -152,7 +139,14 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
     }
 
     private String sendRegistrationEmail(String email) {
-        String password = ChatServerThreadAction.generateRandomPassword();
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
+
+        for (int i = 0; i < 10; i++) {
+            password.append(chars.charAt(random.nextInt(chars.length())));
+        }
 
         MimeMessage mimeMessage = new MimeMessage(this.emailSession);
         try {
@@ -167,6 +161,6 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
             return null;
         }
 
-        return password;
+        return password.toString();
     }
 }

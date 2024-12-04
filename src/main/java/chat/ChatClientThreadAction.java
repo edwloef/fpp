@@ -3,9 +3,7 @@ package chat;
 import socket.TcpThreadAction;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 public class ChatClientThreadAction implements TcpThreadAction {
     private static final String ANSI_CYAN = "\033[36m"; // blue output color
@@ -78,37 +76,6 @@ public class ChatClientThreadAction implements TcpThreadAction {
 
     public boolean isAngemeldet() {
         return this.angemeldet;
-    }
-
-    public String registrieren(Scanner sc) {
-        System.out.print("Bitte geben Sie Ihre E-Mail-Adresse ein: ");
-        String email = URLEncoder.encode(sc.nextLine(), StandardCharsets.UTF_8);
-        System.out.print("Bitte geben Sie Ihren gewünschten Benutzernamen ein: ");
-        String username = URLEncoder.encode(sc.nextLine(), StandardCharsets.UTF_8);
-
-        return "reg " + email + " " + username;
-    }
-
-    public String anmelden(Scanner sc) {
-        System.out.print("Bitte geben Sie Ihre E-Mail-Adresse ein: ");
-        String email = URLEncoder.encode(sc.nextLine(), StandardCharsets.UTF_8);
-        System.out.print("Bitte geben Sie Ihr Passwort ein: ");
-        String password = URLEncoder.encode(sc.nextLine(), StandardCharsets.UTF_8);
-
-        return "an " + email + " " + password;
-    }
-
-    public String passwortÄndern(Scanner sc) {
-        System.out.print("Bitte geben Sie Ihr altes Passwort ein: ");
-        String password = URLEncoder.encode(sc.nextLine(), StandardCharsets.UTF_8);
-        System.out.print("Bitte geben Sie Ihr gewünschtes neues Passwort ein: ");
-        String newPassword = URLEncoder.encode(sc.nextLine(), StandardCharsets.UTF_8);
-
-        return "chpwd " + password + " " + newPassword;
-    }
-
-    public String nachricht(String msg) {
-        return "msg " + URLEncoder.encode(msg, StandardCharsets.UTF_8);
     }
 
     public void waitForResponse() {
