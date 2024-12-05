@@ -47,8 +47,11 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
 
         switch (split[0]) {
             case "reg" -> {
+                if (split.length < 3) {
+                    return "err reg";
+                }
+
                 String email = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
-                String username = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
 
                 if (super.server.sharedState.usernames().containsKey(email)) {
                     return "err reg";
@@ -59,13 +62,18 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                     return "err reg";
                 }
 
-                password = URLEncoder.encode(password, StandardCharsets.UTF_8);
+                String username = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
                 super.server.sharedState.usernames().put(email, username);
+                password = URLEncoder.encode(password, StandardCharsets.UTF_8);
                 super.server.sharedState.passwords().put(email, password);
 
                 return "suc reg";
             }
             case "an" -> {
+                if (split.length < 3) {
+                    return "err an";
+                }
+
                 String email = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
 
                 if (super.server.sharedState.online().contains(email)) {
@@ -96,27 +104,42 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                 return "suc an" + returns;
             }
             case "chpwd" -> {
-                String password = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
-                String newPassword = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
+                if (split.length < 3) {
+                    return "err chpwd";
+                }
 
+                String password = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
                 String correctPassword = super.server.sharedState.passwords().get(this.email);
 
                 if (this.email == null || !password.equals(correctPassword)) {
                     return "err chpwd";
                 }
 
+                String newPassword = URLDecoder.decode(split[2], StandardCharsets.UTF_8);
                 super.server.sharedState.passwords().replace(this.email, newPassword);
 
                 return "suc chpwd";
             }
             case "msg" -> {
-                if (this.email == null) {
+                if (this.email == null || split.length == 1) {
                     return "";
                 }
 
                 String username = URLEncoder.encode(super.server.sharedState.usernames().get(this.email), StandardCharsets.UTF_8);
 
                 super.server.broadcast("msg " + username + " " + split[1]);
+            }
+            case "con" -> {
+                StringBuilder returns = new StringBuilder();
+
+                for (String userEmail : super.server.sharedState.online()) {
+                    String userUsername = URLEncoder.encode(super.server.sharedState.usernames().get(userEmail), StandardCharsets.UTF_8);
+
+                    returns.append("con ").append(userUsername);
+                }
+                returns.append("\n");
+
+                return returns.toString();
             }
             default -> {
             }

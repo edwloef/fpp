@@ -2,7 +2,7 @@
 - an <email> <password>
 - chpwd <old_password> <new_password>
 - msg [<username>] <message>
-- con <username>
+- con [<username>]
 - dis <username>
 
 - suc <reg|an|chpwd>
@@ -11,10 +11,12 @@
 reg <email> <username> -> suc reg
                        -> err reg
 
-an <email> <password> -> broadcast "con <username>" -> con <other_user> für jeden momentan online user -> suc an
+an <email> <password> -> broadcast "con <username>" -> con <user> für jeden momentan online user -> suc an
                       -> err an
 
 chpwd <old_password> <new_password> -> suc chpwd
                                     -> err chpwd
 
 msg <message> -> broadcast "msg <username> <message>"
+
+con -> con <user> für jeden momentan online user

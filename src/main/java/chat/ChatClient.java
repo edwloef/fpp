@@ -63,8 +63,9 @@ public class ChatClient implements Runnable {
             }
 
             System.out.println("┌--------------------┐");
-            System.out.println("| Versenden Sie eine |");
-            System.out.println("| Nachricht mit /msg |");
+            System.out.println("| Fragen Sie mit /an |");
+            System.out.println("| alle angemeldeten  |");
+            System.out.println("| Nutzer ab          |");
             System.out.println("├--------------------┤");
             System.out.println("| Ändern Sie Ihr     |");
             System.out.println("| Passwort mit /pwd  |");
@@ -76,8 +77,8 @@ public class ChatClient implements Runnable {
             while (true) {
                 String in = this.sc.nextLine().strip();
 
-                if (in.startsWith("/msg ")) {
-                    thread.notify(this.nachricht(in.substring(5)));
+                if (in.equals("/an")) {
+                    thread.notify(this.angemeldet());
                 } else if (in.equals("/pwd")) {
                     thread.notify(this.passwortÄndern());
                     action.waitForResponse();
@@ -85,7 +86,7 @@ public class ChatClient implements Runnable {
                     thread.close();
                     return;
                 } else {
-                    System.out.println("falsche Eingabe!");
+                    thread.notify(this.nachricht(in));
                 }
             }
         } catch (IOException e) {
@@ -118,6 +119,10 @@ public class ChatClient implements Runnable {
         String newPassword = URLEncoder.encode(this.sc.nextLine(), StandardCharsets.UTF_8);
 
         return "chpwd " + password + " " + newPassword;
+    }
+
+    private String angemeldet() {
+        return "con";
     }
 
     private String nachricht(String msg) {
