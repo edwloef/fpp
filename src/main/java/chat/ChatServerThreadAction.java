@@ -22,13 +22,13 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
         super(server);
 
         Properties properties = new Properties();
-        properties.put("mail.smtp.host", "mail.gmx.net");
+        properties.put("mail.smtp.host", super.server.sharedState.smtpHost());
         properties.put("mail.smtp.port", 465);
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", true);
 
         Authenticator authenticator = new Authenticator() {
-            private final PasswordAuthentication passwordAuthentication = new PasswordAuthentication("loeffler.steiner.fpp@gmx.de", server.sharedState.srvPassword());
+            private final PasswordAuthentication passwordAuthentication = new PasswordAuthentication(ChatServerThreadAction.super.server.sharedState.serverMail(), server.sharedState.srvPassword());
 
             @Override
             public PasswordAuthentication getPasswordAuthentication() {
@@ -150,7 +150,7 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
 
         MimeMessage mimeMessage = new MimeMessage(this.emailSession);
         try {
-            mimeMessage.setFrom(new InternetAddress("loeffler.steiner.fpp@gmx.de"));
+            mimeMessage.setFrom(new InternetAddress(super.server.sharedState.serverMail()));
             mimeMessage.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
             mimeMessage.setSubject("FPP Registrierung");
             mimeMessage.setSentDate(new Date());

@@ -10,7 +10,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ChatClient implements Runnable {
-    private static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
+    private static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen serverMail cursor to end of screen
     private final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {

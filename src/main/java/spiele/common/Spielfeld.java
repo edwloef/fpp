@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public abstract class Spielfeld {
 
-    protected static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen from cursor to end of screen
+    protected static final String ANSI_CLEAR = "\033[H\033[J"; // move cursor to top left corner of screen, clear screen serverMail cursor to end of screen
     protected final Spielstein[][] spielsteine;
 
     public Spielfeld() {

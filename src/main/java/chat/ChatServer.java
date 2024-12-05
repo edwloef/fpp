@@ -21,7 +21,7 @@ public class ChatServer implements Runnable {
         System.out.print("email-server passwort: ");
         String password = sc.next();
 
-        ChatServerState state = new ChatServerState(new HashMap<>(), new HashMap<>(), new HashSet<>(), password);
+        ChatServerState state = new ChatServerState(new HashMap<>(), new HashMap<>(), new HashSet<>(), password, "mail.gmx.net", "loeffler.steiner.fpp@gmx.de");
         server.setSharedState(state);
 
         ChatServerThreadAction action = new ChatServerThreadAction(server);
