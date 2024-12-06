@@ -51,7 +51,7 @@ public class ChatClientThreadAction implements TcpThreadAction {
 
                 String username = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
 
-                System.out.println(ANSI_CYAN + username + ANSI_RESET + " amgemeldet");
+                System.out.println(ANSI_CYAN + username + ANSI_RESET + " abgemeldet");
             }
             case "msg" -> {
                 if (!this.angemeldet) {
@@ -82,7 +82,7 @@ public class ChatClientThreadAction implements TcpThreadAction {
         this.wait = true;
         while (this.wait) {
             try {
-                Thread.sleep(10);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
             }
         }

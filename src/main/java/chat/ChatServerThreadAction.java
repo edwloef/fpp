@@ -91,17 +91,10 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                 this.email = email;
                 super.server.sharedState.online().add(this.email);
 
-                StringBuilder returns = new StringBuilder();
-                for (String userEmail : super.server.sharedState.online()) {
-                    String userUsername = URLEncoder.encode(super.server.sharedState.usernames().get(userEmail), StandardCharsets.UTF_8);
-
-                    returns.append("\ncon ").append(userUsername);
-                }
-
                 String username = URLEncoder.encode(super.server.sharedState.usernames().get(email), StandardCharsets.UTF_8);
                 super.server.broadcast("con " + username);
 
-                return "suc an" + returns;
+                return "suc an";
             }
             case "chpwd" -> {
                 if (split.length < 3) {
@@ -135,9 +128,8 @@ public class ChatServerThreadAction extends TcpServerThreadAction<ChatServerStat
                 for (String userEmail : super.server.sharedState.online()) {
                     String userUsername = URLEncoder.encode(super.server.sharedState.usernames().get(userEmail), StandardCharsets.UTF_8);
 
-                    returns.append("con ").append(userUsername);
+                    returns.append("con ").append(userUsername).append("\n");
                 }
-                returns.append("\n");
 
                 return returns.toString();
             }

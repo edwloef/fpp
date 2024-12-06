@@ -41,15 +41,19 @@ public class ChatClient implements Runnable {
                     try {
                         String in = this.sc.nextLine().strip();
 
-                        if (in.equals("/reg")) {
-                            thread.notify(this.registrieren());
-                            System.out.print(ChatClient.ANSI_CLEAR);
-                        } else if (in.equals("/an")) {
-                            thread.notify(this.anmelden());
-                            System.out.print(ChatClient.ANSI_CLEAR);
-                        } else {
-                            System.out.println("falsche Eingabe!");
-                            continue;
+                        switch (in) {
+                            case "/reg" -> {
+                                thread.notify(this.registrieren());
+                                System.out.print(ChatClient.ANSI_CLEAR);
+                            }
+                            case "/an" -> {
+                                thread.notify(this.anmelden());
+                                System.out.print(ChatClient.ANSI_CLEAR);
+                            }
+                            default -> {
+                                System.out.println("falsche Eingabe!");
+                                continue;
+                            }
                         }
 
                         break;
@@ -74,19 +78,22 @@ public class ChatClient implements Runnable {
             System.out.println("| mit /ab            |");
             System.out.println("└--------------------┘");
 
+            thread.notify("con");
+
             while (true) {
                 String in = this.sc.nextLine().strip();
 
-                if (in.equals("/an")) {
-                    thread.notify(this.angemeldet());
-                } else if (in.equals("/pwd")) {
-                    thread.notify(this.passwortÄndern());
-                    action.waitForResponse();
-                } else if (in.equals("/ab")) {
-                    thread.close();
-                    return;
-                } else {
-                    thread.notify(this.nachricht(in));
+                switch (in) {
+                    case "/an" -> thread.notify("con");
+                    case "/pwd" -> {
+                        thread.notify(this.passwortÄndern());
+                        action.waitForResponse();
+                    }
+                    case "/ab" -> {
+                        thread.close();
+                        return;
+                    }
+                    default -> thread.notify(this.nachricht(in));
                 }
             }
         } catch (IOException e) {
@@ -119,10 +126,6 @@ public class ChatClient implements Runnable {
         String newPassword = URLEncoder.encode(this.sc.nextLine(), StandardCharsets.UTF_8);
 
         return "chpwd " + password + " " + newPassword;
-    }
-
-    private String angemeldet() {
-        return "con";
     }
 
     private String nachricht(String msg) {

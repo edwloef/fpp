@@ -11,7 +11,7 @@
 reg <email> <username> -> suc reg
                        -> err reg
 
-an <email> <password> -> broadcast "con <username>" -> con <user> für jeden momentan online user -> suc an
+an <email> <password> -> broadcast "con <username>" -> suc an
                       -> err an
 
 chpwd <old_password> <new_password> -> suc chpwd
