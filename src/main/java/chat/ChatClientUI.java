@@ -1,9 +1,20 @@
 package chat;
 
-import javax.swing.*;
+import java.awt.Button;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.GridLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
 
 public class ChatClientUI extends JFrame {
     private final JList<String> chat = new JList<>();
@@ -28,8 +39,6 @@ public class ChatClientUI extends JFrame {
     private JPanel newContentPane() {
         JScrollPane chatScrollable = new JScrollPane(this.chat);
 
-        JScrollPane usersScrollable = new JScrollPane(this.users);
-
         JPanel sendButtonPanel = new JPanel();
         sendButtonPanel.setLayout(new BoxLayout(sendButtonPanel, BoxLayout.Y_AXIS));
         sendButtonPanel.add(new JPanel());
@@ -37,7 +46,8 @@ public class ChatClientUI extends JFrame {
 
         this.messageInput.setLineWrap(true);
         this.messageInput.setWrapStyleWord(true);
-        this.messageInput.setMaximumSize(new Dimension(this.messageInput.getMaximumSize().width, this.messageInput.getFontMetrics(this.messageInput.getFont()).getHeight()));
+        this.messageInput.setMaximumSize(new Dimension(this.messageInput.getMaximumSize().width,
+                this.messageInput.getFontMetrics(this.messageInput.getFont()).getHeight()));
         this.messageInput.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -55,19 +65,49 @@ public class ChatClientUI extends JFrame {
             }
         });
 
-        JPanel userInputSplit = new JPanel();
-        userInputSplit.setLayout(new BoxLayout(userInputSplit, BoxLayout.X_AXIS));
-        userInputSplit.add(messageInput);
-        userInputSplit.add(sendButtonPanel);
+        JPanel userInputPanel = new JPanel();
+        userInputPanel.setLayout(new BoxLayout(userInputPanel, BoxLayout.X_AXIS));
+        userInputPanel.add(messageInput);
+        userInputPanel.add(sendButtonPanel);
         // TODO: this isn't perfect
-        userInputSplit.setMaximumSize(new Dimension( userInputSplit.getMaximumSize().width, this.messageInput.getMaximumSize().height));
+        userInputPanel.setMaximumSize(
+                new Dimension(userInputPanel.getMaximumSize().width, this.messageInput.getMaximumSize().height));
 
         JPanel chatPanel = new JPanel();
         chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.Y_AXIS));
+        chatPanel.setMaximumSize(new Dimension(chatPanel.getMaximumSize().width, chatPanel.getMaximumSize().height));
         chatPanel.add(chatScrollable);
-        chatPanel.add(userInputSplit);
+        chatPanel.add(userInputPanel);
 
-        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, chatPanel, usersScrollable);
+        // Right side;
+
+        JScrollPane usersScrollable = new JScrollPane(this.users);
+
+        Button anButton = new Button("Anmelden");
+        this.setButtonDimension(anButton);
+        Button regButton = new Button("Registrieren");
+        this.setButtonDimension(regButton);
+        Button chpewButton = new Button("Change Pasword");
+        this.setButtonDimension(chpewButton);
+
+        JPanel buttomPanel = new JPanel();
+        buttomPanel.setLayout(new BoxLayout(buttomPanel, BoxLayout.Y_AXIS));
+        if (/** PolicyQualifierInfo.status == true || */
+        false) {
+            buttomPanel.add(anButton);
+            buttomPanel.add(regButton);
+        } else {
+            buttomPanel.add(chpewButton);
+        }
+
+        JPanel logPanel = new JPanel();
+        logPanel.setLayout(new BoxLayout(logPanel, BoxLayout.Y_AXIS));
+        logPanel.add(usersScrollable);
+        logPanel.add(buttomPanel);
+
+        chatPanel.setMinimumSize(new Dimension(100, 100));
+        logPanel.setMinimumSize(new Dimension(100, 100));
+        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, chatPanel, logPanel);
         split.setDividerSize(2);
 
         JPanel panel = new JPanel(new GridLayout());
@@ -94,5 +134,10 @@ public class ChatClientUI extends JFrame {
 
         this.messageInput.setMaximumSize(new Dimension(this.messageInput.getWidth(), lineHeight * lines));
         this.messageInput.revalidate();
+    }
+
+    private void setButtonDimension(Button button) {
+        button.setMinimumSize(new Dimension(button.getMaximumSize().width, 20));
+        button.setMaximumSize(new Dimension(button.getMaximumSize().width, button.getMaximumSize().height / 40));
     }
 }
